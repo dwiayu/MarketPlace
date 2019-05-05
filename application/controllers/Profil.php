@@ -102,18 +102,18 @@ class Profil extends REST_Controller {
             break;
         }
     }
-    function myedit_post(){
+    function myedit_put(){
        
-        // $data_user = array(
-        //     'id_user' =>$this->post('id_user'),
-        //     'nama' =>$this->post('nama'),
-        //     // 'jenis_kelamin' =>$this->post('jenis_kelamin'),
-        //     'no_hp' =>$this->post('no_hp'),
-        //     // 'foto_user' =>$this->post('foto_user'),
-        //     'email' =>$this->post('email'),
-        //     'username'=>$this->post('username'),
-        //     'password' =>$this->post('password')
-        // );
+        $data_user = array(
+            'id_user' =>$this->put('id_user'),
+            'nama' =>$this->put('nama'),
+            'jenis_kelamin' =>$this->put('jenis_kelamin'),
+            'no_hp' =>$this->put('no_hp'),
+            'foto_user' =>$this->put('foto_user'),
+            'email' =>$this->put('email'),
+            'username'=>$this->put('username'),
+            'password' =>$this->put('password')
+        );
         // //cek apakah data ada di database
         // $get_user_baseID= $this->db->query("
         // SELECT
@@ -174,17 +174,28 @@ class Profil extends REST_Controller {
         //      WHERE id_user = {$data_user['id_user']}"
         //  );
         // }
-        if ($update){
-            $this->response(
-                array(
-                    "status"    => "success",
-                    "result"    => array($data_user),
-                    "message"   => $update
-                )
-            );
-    //     }
-    // }
-}
+        if($update){
+            $this->db->where('id_user', $data_user['id_user']);
+            $update= $this->db->update ('user',$data_user);
+            if($update){
+                $this->response(
+                    array(
+                        'status'=>'success',
+                        'result'=>array($data_user),
+                         "message"=>$update));
+            }
+        }
+//         if ($update){
+//             $this->response(
+//                 array(
+//                     "status"    => "success",
+//                     "result"    => array($data_user),
+//                     "message"   => $update
+//                 )
+//             );
+//     //     }
+//     // }
+// }
     }
     function uploadPhoto() {
         
