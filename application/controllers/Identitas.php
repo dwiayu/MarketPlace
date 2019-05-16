@@ -174,6 +174,19 @@ if($get_user_baseID ==0){
       
     }
 
+function myidentitas_post(){
+    $id_user = $this->post('id_user');
+    $get_identitas = $this->db->query("
+    SELECT
+   id_identitas,id_user, foto_ktp, status
+       FROM identitas WHERE id_user=$id_user")->result();
+$this->response(
+   array(
+       "status" => "success",
+       "result" => $get_identitas
+   )
+);
+}    
 
     function uploadPhoto() {
         
