@@ -12,7 +12,7 @@ class Pendaftaran extends REST_Controller {
     }
 
 	function all_post(){
-		$level = 'Toko';
+		$level = 'Tempat Sewa';
 		$action = $this->post('action');
 		$data_pendaftaran = array(
 			'id_user' =>$this->post('id_user'),

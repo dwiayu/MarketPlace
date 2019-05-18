@@ -23,12 +23,7 @@ class Identitas extends REST_Controller {
 	// }
     function all_get(){
         $get_identitas = $this->db->query("
-            SELECT
-            id_identitas,
-            id_user,
-            foto_ktp,
-            status,
-            FROM identitas")->result();
+            SELECT * FROM identitas")->result();
         $this->response(
            array(
                "status" => "success",
@@ -99,80 +94,80 @@ $status= 'menunggu';
             }
         }
         }
+        function editidentitas_post(){
+            $status = 'menunggu';
+            $data_identitas= array(
+                'id_identitas' => $this->post('id_identitas'),
+                'foto_ktp' => $this->post('foto_ktp'),
+                'status' =>($status)
+            );
+            // Cek apakah ada di database
+            $get_user_baseID = $this->db->query("
+            SELECT 1
+            FROM identitas
+            WHERE id_identitas = {$data_identitas['id_identitas']}")->num_rows();
 
-    function myidentitas($data_identitas){
-       
-        if(empty($data_identitas['id_identitas']) ){
+        if($get_user_baseID === 0){
+            // Jika tidak ada
             $this->response(
                 array(
-                    "status" =>"failed",
-                    "message" => "Lengkapi Data"             
-            )
+                    "status"  => "failed",
+                    "message" => "ID identitas tidak ditemukan"
+                )
+            );
+        } else {
+            // Jika ada
+            $data_identitas['foto_ktp'] = $this->uploadPhoto();
+
+            if ($data_identitas['foto_ktp']){
+                $get_photo_ktp =$this->db->query("
+                    SELECT foto_ktp
+                    FROM identitas
+                    WHERE id_identitas = {$data_identitas['id_identitas']}")->result();
+
+                if(!empty($get_photo_ktp)){
+
+                    // Dapatkan nama_user file
+                    $photo_nama_user_file = basename($get_photo_ktp[0]->foto_ktp);
+                    // Dapatkan letak file di folder upload
+                    $photo_lokasi_file = realpath(FCPATH . $this->folder_upload . $photo_nama_user_file);
+
+                    // Jika file ada, hapus
+                    if(file_exists($photo_lokasi_file)) {
+                        // Hapus file
+                        unlink($photo_lokasi_file);
+                    }
+                }
+                // Jika upload foto berhasil, eksekusi update
+                $update = $this->db->query("
+                    UPDATE identitas SET
+                    foto_ktp = '{$data_identitas['foto_ktp']}',
+                    status = '{$data_identitas['status']}'
+                    WHERE id_identitas = '{$data_identitas['id_identitas']}'");
+
+            } else {
+                // Jika foto kosong atau upload foto tidak berhasil, eksekusi update
+                $update = $this->db->query("
+                    UPDATE identitas
+                    SET
+                    status    = '{$data_identitas['status']}'
+                    WHERE id_identitas = {$data_identitas['id_identitas']}"
                 );
-        }else{
-//cek apakah data ada di database
-$get_user_baseID= $this->db->query("
-SELECT
-*
-  FROM identitas 
-  WHERE id_identitas={$data_identitas['id_identitas']} limit 1")->num_rows();
-//jika tidak ada
-if($get_user_baseID ==0){
-    $this->response(
-        array (
-            "status" =>"failed",
-            "message" =>"user ID tidak ditemukan")
-        );
-}else{
-    //jika ada
-    $data_identitas['foto_ktp'] = $this->uploadPhoto();
+            }
 
-    if($data_identitas['foto_ktp']){
-        $get_foto_ktp = $this->db->query("
-        SELECT foto_ktp from identitas WHERE id_identitas ={$data_identitas['id_identitas']}")->result();
-    
-        if(!empty($get_foto_ktp)){
-            //Dapatkan nama user file
-            $foto_nama_user_file = basename($get_foto_ktp[0]->foto_ktp);
-            //dapatkan letakkan di folder upload 
-            $foto_lokasi_file = realpath(FCPATH . $this->folder_upload . $foto_nama_user_file);
-
-//             //jika file ada, hapus
-            if(file_exists($foto_lokasi_file)){
-                //hapus file
-                unlink($foto_lokasi_file);
+            if ($update){
+                $this->response(
+                    array(
+                        "status"    => "success",
+                        "result"    => array($data_identitas),
+                        "message"   => $update
+                    )
+                );
             }
         }
-//         //jika upload foto berhasil, eksekusi update
-        $update = $this ->db->query("
-        UPDATE identitas SET
-        foto_ktp ='{$data_identitas['foto_ktp']}'
-        WHERE id_identitas = {$data_identitas['id_identitas']}"
-            );
-
-}
-
-    $this->db->where('id_identitas', $data_identitas['id_identitas']);
-    $update= $this->db->update ('identitas',$data_identitas);
-    if($update){
-        $this->response(
-            array(
-                'status'=>'success',
-                'result'=>array($data_identitas),
-                 "message"=>$update));
-    }else{
-    $this->response(
-        array(
-            "status"    => "failed",
-            "message" => "gagal update"
-        )
-    );
-}
         }
 
-    }
-      
-    }
+  
 
 function myidentitas_post(){
     $id_user = $this->post('id_user');
@@ -180,12 +175,27 @@ function myidentitas_post(){
     SELECT
    id_identitas,id_user, foto_ktp, status
        FROM identitas WHERE id_user=$id_user")->result();
-$this->response(
-   array(
-       "status" => "success",
-       "result" => $get_identitas
-   )
-);
+       if(!empty($get_identitas)){
+        $this->response(
+            array(
+                "status" => "success",
+                "result" => $get_identitas
+            )
+         );
+       }else{
+        $this->response(
+            array(
+                "status" => "kosong"
+            )
+         );
+       }
+          
+        
+       
+    
+     
+   
+
 }    
 
     function uploadPhoto() {
