@@ -17,7 +17,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 public class APIClient {
-    public static final String BASE_URL = "http://192.168.43.184:81/RESTT/index.php/";
+    public static final String BASE_URL = "http://192.168.43.184:81/RESTT/";
 
     private static Retrofit retrofit= null;
     public static Retrofit getClient(){

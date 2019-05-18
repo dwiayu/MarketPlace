@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRIRE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -58,13 +58,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".beranda" />
         </activity>
-        <activity android:name=".EditTempatActivity"
+        <activity
+            android:name=".EditTempatActivity"
             android:label="Tempat Sewa"
             android:parentActivityName=".TempatSewaActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".TempatSewaActivity" />
         </activity>
+        <activity android:name=".Identitas" />
+        <activity android:name=".ListAlamat" />
+        <activity android:name=".InsertAlamat" />
+        <activity android:name=".LayarEditAlamat" />
+        <activity android:name=".DaftarAlamat" />
+        <activity android:name=".LayarIdentitas" />
+        <activity android:name=".UpdateIdentitas" />
+        <activity android:name=".InsertTempatSewa"></activity>
     </application>
 
 </manifest>

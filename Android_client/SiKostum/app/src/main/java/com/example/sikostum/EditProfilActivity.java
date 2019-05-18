@@ -46,13 +46,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static java.security.AccessController.getContext;
+import static okhttp3.MediaType.parse;
 
 public class EditProfilActivity extends AppCompatActivity {
     EditText edt_nama, edt_noHp,edt_email, edt_username, edt_password, edtidUser;
     RadioButton rp,rl;
     RadioGroup rg;
     Button camera, edit;
-    int id_user;
+    String id_user;
     ImageView foto_user;
     String image_path="";
     String jenisKel;
@@ -72,7 +73,7 @@ public class EditProfilActivity extends AppCompatActivity {
         menu.setDisplayShowHomeEnabled(true);
 
 
-        edtidUser = (EditText) findViewById(R.id.id_user);
+        //edtidUser = (EditText) findViewById(R.id.id_user);
         edt_nama = (EditText) findViewById(R.id.nama);
 //        rg = (RadioGroup) findViewById(R.id.radioGroupGender);
 //        rp = (RadioButton) findViewById(R.id.radioPerempuan);
@@ -84,7 +85,8 @@ public class EditProfilActivity extends AppCompatActivity {
         edt_password = (EditText) findViewById(R.id.password);
         camera = (Button) findViewById(R.id.buttonPilihGambar);
         edit = (Button) findViewById(R.id.buttonEdit) ;
-        id_user =Integer.parseInt(SaveSharedPreferences.getId(getApplicationContext()));
+//        id_user = Integer.parseInt(SaveSharedPreferences.getId(getApplicationContext()));
+        id_user = SaveSharedPreferences.getId(getApplicationContext());
 
 
         Intent mIntent = getIntent();
@@ -145,34 +147,37 @@ public class EditProfilActivity extends AppCompatActivity {
 //                    body = MultipartBody.Part.createFormData("foto_user", file.getName(),
 //                            requestFile);
 //                }
-//                RequestBody reqid_user =
-////                        MultipartBody.create(MediaType.parse("multipart/form-data"),
-////                                (id_user));
+                RequestBody reqid_user =
+                        MultipartBody.create(parse("multipart/form-data"),
+                              id_user);
                 RequestBody reqnama =
-                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        MultipartBody.create(parse("multipart/form-data"),
                                 (edt_nama.getText().toString().isEmpty())?
                                         "" : edt_nama.getText().toString());
 //                RequestBody reqjenis_kelamin =
 //                        MultipartBody.create(MediaType.parse("multipart/form-data"),
 //                                (jenisKel));
                 RequestBody reqno_hp =
-                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        MultipartBody.create(parse("multipart/form-data"),
                                 (edt_noHp.getText().toString().isEmpty())?
                                         "" : edt_noHp.getText().toString());
                 RequestBody reqemail =
-                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        MultipartBody.create(parse("multipart/form-data"),
                                 (edt_email.getText().toString().isEmpty())?
                                         "" : edt_email.getText().toString());
                 RequestBody requsername =
-                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        MultipartBody.create(parse("multipart/form-data"),
                                 (edt_username.getText().toString().isEmpty())?
                                         "" : edt_username.getText().toString());
                 RequestBody reqpassword =
-                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        MultipartBody.create(parse("multipart/form-data"),
                                 (edt_password.getText().toString().isEmpty())?
                                         "" : edt_password.getText().toString());
-                Call<GetEditProfil> callUpdate = mApiInterface.postEditProfil(body,  reqnama,
+
+
+                Call<GetEditProfil> callUpdate = mApiInterface.postEditProfil(reqid_user, reqnama,
                         reqno_hp, reqemail, requsername, reqpassword);
+
                 callUpdate.enqueue(new Callback<GetEditProfil>() {
                     @Override
                     public void onResponse(Call<GetEditProfil> call, Response<GetEditProfil> response) {
@@ -180,7 +185,7 @@ public class EditProfilActivity extends AppCompatActivity {
                             Toast.makeText(EditProfilActivity.this, "Gagal Edit Profil", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(EditProfilActivity.this, "Berhasil", Toast.LENGTH_SHORT).show();
-                            Intent myProfileIntent = new Intent(getApplicationContext(), ProfilFragment.class);
+                            Intent myProfileIntent = new Intent(getApplicationContext(), beranda.class);
                             startActivity(myProfileIntent);
                         }
                     }

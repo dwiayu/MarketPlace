@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LayarIdentitas">
+
+    <TextView
+        android:id="@+id/tvPr"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Identitas Saya"
+        android:textAlignment="center"/>
+
+
+    <TextView
+        android:id="@+id/tvIdentitas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="183dp"
+        android:hint="Id Identitas" />
+
+    <ImageView
+        android:id="@+id/gbrId"
+        android:layout_width="match_parent"
+        android:layout_height="297dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="58dp" />
+
+    <TextView
+        android:id="@+id/statusId"
+        android:layout_width="121dp"
+        android:layout_height="36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="135dp"
+        android:layout_marginEnd="116dp"
+        android:hint="status" />
+
+    <Button
+        android:id="@+id/btUpId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="49dp"
+        android:layout_marginStart="31dp"
+        android:text="Update" />
+
+    <Button
+        android:id="@+id/btKembaliId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/btUpId"
+        android:layout_marginEnd="27dp"
+        android:text="Kembali" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/tvIdentitas"
+        android:layout_marginStart="21dp"
+        android:text="Id Identitas" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignTop="@+id/statusId"
+        android:text="Status" />
+</RelativeLayout>

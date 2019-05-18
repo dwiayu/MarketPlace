@@ -43,9 +43,8 @@ public class ProfilFragment extends Fragment {
     TextView nama ;
     EditText nama2, email, no_hp, username, password;
 
-
     RadioGroup rg;
-    Button edit, keluar;
+    Button edit, keluar, identitas, alamat;
     int id_user;
     ImageView foto, foto_user2;
     String foto_user;
@@ -80,6 +79,8 @@ public class ProfilFragment extends Fragment {
         email =rootView.findViewById(R.id.email);
         username = rootView.findViewById(R.id.username);
         password = rootView.findViewById(R.id.password);
+       identitas = rootView.findViewById(R.id.bt_identitas);
+       alamat = rootView.findViewById(R.id.bt_alamat);
 
 //        nama2 = rootView2.findViewById(R.id.nama);
         email = rootView2.findViewById(R.id.email);
@@ -98,6 +99,13 @@ public class ProfilFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        identitas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), LayarIdentitas.class);
+                startActivity(intent);
+            }
+        });
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +119,13 @@ public class ProfilFragment extends Fragment {
                 mIntent.putExtra("username", username.getText().toString());
                 mIntent.putExtra("password", password.getText().toString());
                 startActivity(mIntent);
+            }
+        });
+        alamat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(getContext(), DaftarAlamat.class);
+                startActivity(intent);
             }
         });
         return rootView;

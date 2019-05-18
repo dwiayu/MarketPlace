@@ -168,6 +168,21 @@
                     android:textColor="@android:color/white" />
 
             </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/buttonInsTempat"
+                    android:layout_width="100dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:background="#03A9F4"
+                    android:text="Insert"
+                    android:textColor="@android:color/white" />
+
+            </android.support.design.widget.TextInputLayout>
 
 
 

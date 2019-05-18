@@ -26,20 +26,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
 
-                <EditText
-                    android:id="@+id/id_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="no hp"
-                    android:inputType="number|phone"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                <!--<EditText-->
+                    <!--android:id="@+id/id_user"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:hint="no hp"-->
+                    <!--android:inputType="number|phone"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:singleLine="true" />-->
 
-            </android.support.design.widget.TextInputLayout>
+            <!--</android.support.design.widget.TextInputLayout>-->
 
 
             <android.support.design.widget.TextInputLayout

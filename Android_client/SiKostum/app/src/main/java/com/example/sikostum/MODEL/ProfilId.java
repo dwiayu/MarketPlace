@@ -8,7 +8,7 @@ import java.util.List;
 public class ProfilId {
 
     @SerializedName("id_user")
-    private String id_user;
+    private int id_user;
     @SerializedName("nama")
     private String nama;
     @SerializedName("jenis_kelamin")
@@ -27,11 +27,11 @@ public class ProfilId {
     private String password;
 
 
-    public String getId_user() {
+    public int getId_user() {
         return id_user;
     }
 
-    public void setId_user(String id_user) {
+    public void setId_user(int id_user) {
         this.id_user = id_user;
     }
 
@@ -108,15 +108,15 @@ public class ProfilId {
         this.foto_user = foto_user;
     }
 
-    public ProfilId(String id_user, String nama, String jenis_kelamin, String no_hp, String email,
-                    String level, String username, String password, String foto_user){
+    public ProfilId(int id_user, String nama, String no_hp, String email,
+                    String level, String username, String password){
         this.id_user= id_user;
         this.nama= nama;
-        this.jenis_kelamin= jenis_kelamin;
+//        this.jenis_kelamin= jenis_kelamin;
         this.no_hp= no_hp;
         this.level=level;
         this.username= username;
         this.password=password;
-        this.foto_user=foto_user;
+//        this.foto_user=foto_user;
     }
 }

@@ -1,9 +1,14 @@
 package com.example.sikostum.REST;
 
+import com.example.sikostum.MODEL.GetAlamat;
+import com.example.sikostum.MODEL.GetDelete;
 import com.example.sikostum.MODEL.GetEditProfil;
+import com.example.sikostum.MODEL.GetIdentitas;
 import com.example.sikostum.MODEL.GetLogin;
 import com.example.sikostum.MODEL.GetPendaftaran;
 import com.example.sikostum.MODEL.GetProfilId;
+import com.example.sikostum.MODEL.GetTempat;
+import com.example.sikostum.MODEL.PostIdentitas;
 import com.example.sikostum.MODEL.ProfilId;
 
 import okhttp3.MultipartBody;
@@ -96,15 +101,80 @@ public interface APIInterface {
     @Multipart
     @POST("profil/myedit")
     Call<GetEditProfil>postEditProfil(
-            @Part MultipartBody.Part file,
-//            @Part("id_user") RequestBody id_user,
+            @Part("id_user") RequestBody id_user,
             @Part("nama") RequestBody nama,
-//            @Part("jenis_kelamin") RequestBody jenis_kelamin,
             @Part("no_hp") RequestBody no_hp,
             @Part("email") RequestBody email,
             @Part("username") RequestBody username,
-            @Part("password")RequestBody password
+            @Part("password") RequestBody password
     );
+
+    //Identitas
+    @Multipart
+    @POST("identitas/myidentitas")
+    Call<GetIdentitas> getIdentitas(
+        @Part("id_user") RequestBody id_user
+    );
+    @Multipart
+    @POST("identitas/all")
+    Call<GetIdentitas>postIdentitas(
+            @Part MultipartBody.Part file,
+      @Part("id_user")RequestBody id_user,
+      @Part ("action") RequestBody action
+    );
+    @Multipart
+    @POST("identitas/editidentitas")
+    Call<GetIdentitas>putIdentitas(
+            @Part MultipartBody.Part file,
+            @Part("id_identitas") RequestBody id_identitas
+    );
+
+    //Alamat
+    @Multipart
+    @POST("alamat/myAlamat")
+    Call<GetAlamat> getAlamat(
+            @Part("id_user") RequestBody id_user
+
+    );
+
+@Multipart
+    @POST("alamat/all")
+    Call<GetAlamat>postAlamat(
+
+     @Part("id_user") RequestBody id_user,
+     @Part("label_alamat") RequestBody label_alamat,
+     @Part("alamat") RequestBody alamat,
+     @Part("kota") RequestBody kota,
+     @Part("action") RequestBody action
+    );
+
+@Multipart
+    @POST("alamat/editalamat")
+    Call<GetAlamat>putAlamat(
+            @Part("id_alamat") RequestBody id_alamat,
+            @Part("label_alamat") RequestBody label_alamat,
+            @Part("alamat") RequestBody alamat,
+            @Part("kota") RequestBody kota
+ );
+@Multipart
+    @POST("alamat/deletemy")
+    Call<GetDelete>deleteAlamat(
+        @Part("id_alamat") RequestBody id_alamat
+);
+@Multipart
+    @POST("TempatSewa/insertAlamat")
+    Call<GetTempat>posTempat(
+        @Part MultipartBody.Part file,
+            @Part("id_user") RequestBody id_user,
+            @Part("id_alamat") RequestBody id_alamat,
+            @Part("nama_tempat") RequestBody nama_tempat,
+            @Part("no_rekening") RequestBody no_rekening,
+            @Part("slogan_tempat") RequestBody slogan_tempat,
+            @Part("deskripsi_tempat")RequestBody deskripsi_tempat,
+            @Part("status_tempat") RequestBody status_tempat,
+            @Part("izin") RequestBody izin
+);
+
 
 
 
