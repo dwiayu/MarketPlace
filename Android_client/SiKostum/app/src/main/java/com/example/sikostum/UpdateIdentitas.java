@@ -64,7 +64,7 @@ public class UpdateIdentitas extends AppCompatActivity {
         if (fileNamePhoto != null){
             Glide.with(getApplicationContext()).load(imagePath).into(ivPhoto);
         } else {
-            Glide.with(getApplicationContext()).load(R.drawable.ic_account_circle_black_24dp).into(ivPhoto);
+            Glide.with(getApplicationContext()).load(R.drawable.ic_person_black_24dp).into(ivPhoto);
         }
         imagePath = mIntent.getStringExtra("foto_ktp_url");
 

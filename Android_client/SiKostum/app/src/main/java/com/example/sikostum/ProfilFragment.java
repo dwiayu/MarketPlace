@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.sikostum.MODEL.GetProfilId;
 import com.example.sikostum.MODEL.ProfilId;
 import com.example.sikostum.REST.APIClient;
@@ -48,6 +49,7 @@ public class ProfilFragment extends Fragment {
     int id_user;
     ImageView foto, foto_user2;
     String foto_user;
+    String url_photo, photoName;
     APIInterface mAPIInterface;
     public ProfilFragment(){
 
@@ -114,10 +116,12 @@ public class ProfilFragment extends Fragment {
                 mIntent.putExtra("nama", nama.getText().toString());
 //                mIntent.putExtra("jenis_kelamin", rg.getCheckedRadioButtonId());
                 mIntent.putExtra("no_hp", no_hp.getText().toString());
-                mIntent.putExtra("foto_user",foto_user );
+//                mIntent.putExtra("foto_user",foto_user );
                 mIntent.putExtra("email", email.getText().toString());
                 mIntent.putExtra("username", username.getText().toString());
                 mIntent.putExtra("password", password.getText().toString());
+                mIntent.putExtra("foto_user", photoName);
+                mIntent.putExtra("foto_user_url", url_photo);
                 startActivity(mIntent);
             }
         });
@@ -147,7 +151,15 @@ public class ProfilFragment extends Fragment {
                 if (response.body().getStatus().equals("success")){
                     nama.setText(response.body().getResult().get(0).getNama());
                     no_hp.setText(response.body().getResult().get(0).getNo_hp());
-//                    foto_user=APIClient.BASE_URL+"uploads/"+response.body().getResult().get(0).getFoto_user();
+                    url_photo = APIClient.BASE_URL+"uploads/"+response.body().getResult().get(0).getFoto_user();
+                    photoName = response.body().getResult().get(0).getFoto_user();
+                    if (photoName != null){
+                        Glide.with(getContext()).load(url_photo).into(foto);
+                    } else {
+                        Glide.with(getContext()).load(R.drawable.kostum_icon).into(foto);
+                    }
+
+
                     email.setText(response.body().getResult().get(0).getEmail());
                     username.setText(response.body().getResult().get(0).getUsername());
                     password.setText(response.body().getResult().get(0).getPassword());
@@ -159,7 +171,7 @@ public class ProfilFragment extends Fragment {
             @Override
             public void onFailure(Call<GetProfilId> call, Throwable t) {
                 Log.d("MyProfile", t.getMessage());
-
+                Toast.makeText(getActivity(),"Gagal",Toast.LENGTH_SHORT).show();
             }
         });
 

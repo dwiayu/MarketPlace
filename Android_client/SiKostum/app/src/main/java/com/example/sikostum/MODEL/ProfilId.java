@@ -109,14 +109,14 @@ public class ProfilId {
     }
 
     public ProfilId(int id_user, String nama, String no_hp, String email,
-                    String level, String username, String password){
+                    String level, String username, String password,String foto_user){
         this.id_user= id_user;
         this.nama= nama;
-//        this.jenis_kelamin= jenis_kelamin;
         this.no_hp= no_hp;
         this.level=level;
         this.username= username;
         this.password=password;
-//        this.foto_user=foto_user;
+        this.foto_user=foto_user;
+        this.email=email;
     }
 }

@@ -104,97 +104,76 @@ class Profil extends REST_Controller {
     }
     function myedit_post(){
        
-        $data_user = array(
+        $data_user= array(
             'id_user' =>$this->post('id_user'),
-            'nama' =>$this->post('nama'),
-            // 'jenis_kelamin' =>$this->post('jenis_kelamin'),
-            'no_hp' =>$this->post('no_hp'),
-            // 'foto_user' =>$this->post('foto_user'),
-            'email' =>$this->post('email'),
-            'username'=>$this->post('username'),
+            'nama' => $this->post('nama'),
+            'email' => $this->post('email'),
+            'no_hp' => $this->post('no_hp'),
+            'foto_user' => $this->post('foto_user'),
+            'username' => $this->post('username'),
             'password' =>$this->post('password')
         );
+        // Cek apakah ada di database
+        $get_user_baseID = $this->db->query("
+        SELECT 1
+        FROM user
+        WHERE id_user = {$data_user['id_user']}")->num_rows();
 
-        $update = $this ->db->query("
-        UPDATE user SET
-        nama = '{$data_user['nama']}',
-        no_hp ='{$data_user['no_hp']}',
-        email  = '{$data_user['email']}',
-        username = '{$data_user['username']}',
-        password = '{$data_user['password']}'
-        WHERE id_user = {$data_user['id_user']}"
-            );
-        //cek apakah data ada di database
-        // $get_user_baseID= $this->db->query("
-        // SELECT
-        //  1
-        //   FROM user 
-        //   WHERE id_user={$data_user['id_user']}")->num_rows();
-        // //jika tidak ada
-        // if($get_user_baseID ==0){
-        //     $this->response(
-        //         array (
-        //             "status" =>"failed",
-        //             "message" =>"user ID tidak ditemukan")
-        //         );
-        // }else{
-            //jika ada
-        //     $data_user['foto_user'] = $this->uploadPhoto();
+    if($get_user_baseID === 0){
+        // Jika tidak ada
+        $this->response(
+            array(
+                "status"  => "failed",
+                "message" => "ID identitas tidak ditemukan"
+            )
+        );
+    } else {
+        // Jika ada
+        $data_user['foto_user'] = $this->uploadPhoto();
 
-        //     if($data_user['foto_user']){
-        //         $get_foto_user = $this->db->query("
-        //         SELECT foto_user from user WHERE id_user ={$data_user['id_user']}")->result();
-            
-        //         if(!empty($get_foto_user)){
-        //             //Dapatkan nama user file
-        //             $foto_nama_user_file = basename($get_foto_user[0]->foto_user);
-        //             //dapatkan letakkan di folder upload 
-        //             $foto_lokasi_file = realpath(FCPATH . $this->folder_upload . $foto_nama_user_file);
+        if ($data_user['foto_user']){
+            $get_photo_user =$this->db->query("
+                SELECT foto_user
+                FROM user
+                WHERE id_user = {$data_user['id_user']}")->result();
 
-        //             //jika file ada, hapus
-        //             if(file_exists($foto_lokasi_file)){
-        //                 //hapus file
-        //                 unlink($foto_lokasi_file);
-        //             }
-        //         }
-        //         //jika upload foto berhasil, eksekusi update
-        //         $update = $this ->db->query("
-        //         UPDATE user SET
-        //         nama = '{$data_user['nama']}',
-        //         jenis_kelamin = '{$data_user['jenis_kelamin']}',
-        //         no_hp ='{$data_user['no_hp']}',
-        //         foto_user ='{$data_user['foto_user']}',
-        //         email  = '{$data_user['email']}',
-        //         username = '{$data_user['username']}',
-        //         password = '{$data_user['password']}'
-        //         WHERE id_user = {$data_user['id_user']}"
-        //             );
-     
-        // }else{
-        //      // Jika foto kosong atau upload foto tidak berhasil, eksekusi update
-        //      $update = $this ->db->query("
-        //      UPDATE user SET
-        //      nama = '{$data_user['nama']}',
-            
-        //      no_hp ='{$data_user['no_hp']}',
-        //      email  = '{$data_user['email']}',
-        //      username = '{$data_user['username']}',
-        //      password = '{$data_user['password']}'
-        //      WHERE id_user = {$data_user['id_user']}"
-        //          );
-      
-        // }
-        // if($update){
-        //     $this->db->where('id_user', $data_user['id_user']);
-        //     $update= $this->db->update ('user',$data_user);
-        //     if($update){
-        //         $this->response(
-        //             array(
-        //                 'status'=>'success',
-        //                 'result'=>array($data_user),
-        //                  "message"=>$update));
-        //     }
-        // }
+            if(!empty($get_photo_user)){
+
+                // Dapatkan nama_user file
+                $photo_nama_user_file = basename($get_photo_user[0]->foto_user);
+                // Dapatkan letak file di folder upload
+                $photo_lokasi_file = realpath(FCPATH . $this->folder_upload . $photo_nama_user_file);
+
+                // Jika file ada, hapus
+                if(file_exists($photo_lokasi_file)) {
+                    // Hapus file
+                    unlink($photo_lokasi_file);
+                }
+            }
+            // Jika upload foto berhasil, eksekusi update
+            $update = $this->db->query("
+                UPDATE user SET
+                nama = '{$data_user['nama']}',
+                email = '{$data_user['email']}',
+                no_hp = '{$data_user['no_hp']}',
+                foto_user = '{$data_user['foto_user']}',
+                username = '{$data_user['username']}',
+                password = '{$data_user['password']}'
+                WHERE id_user = '{$data_user['id_user']}'");
+
+        } else {
+            // Jika foto kosong atau upload foto tidak berhasil, eksekusi update
+            $update = $this->db->query("
+                UPDATE user
+                SET
+                nama = '{$data_user['nama']}',
+                email = '{$data_user['email']}',
+                no_hp = '{$data_user['no_hp']}',
+                username = '{$data_user['username']}',
+                password = '{$data_user['password']}'
+                WHERE id_user = '{$data_user['id_user']}'");
+        }
+
         if ($update){
             $this->response(
                 array(
@@ -203,16 +182,9 @@ class Profil extends REST_Controller {
                     "message"   => $update
                 )
             );
-        }else{
-            $this->response(
-                array(
-                    "status"    => "failed",
-                    "message" => "gagal update"
-                )
-            );
         }
     }
-
+    }
 
     function uploadPhoto() {
         

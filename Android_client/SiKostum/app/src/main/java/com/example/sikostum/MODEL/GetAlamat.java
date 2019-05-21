@@ -14,6 +14,7 @@ public class GetAlamat {
     private String message;
 
     public GetAlamat() {
+
     }
 
     public String getStatus() {

@@ -1,8 +1,11 @@
 package com.example.sikostum;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -31,12 +34,20 @@ import com.example.sikostum.MODEL.ProfilId;
 import com.example.sikostum.REST.APIClient;
 import com.example.sikostum.REST.APIInterface;
 import com.example.sikostum.Utils.SaveSharedPreferences;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -55,9 +66,11 @@ public class EditProfilActivity extends AppCompatActivity {
     Button camera, edit;
     String id_user;
     ImageView foto_user;
-    String image_path="";
+    String imagePath="";
     String jenisKel;
     Context mContext;
+    String fileNamePhoto;
+
 
     
     @Override
@@ -97,56 +110,38 @@ public class EditProfilActivity extends AppCompatActivity {
         edt_email.setText(mIntent.getStringExtra("email"));
         edt_username .setText(mIntent.getStringExtra("username"));
         edt_password.setText(mIntent.getStringExtra("password"));
-        image_path= mIntent.getStringExtra("foto_user");
+        imagePath= mIntent.getStringExtra("foto_user_url");
+        fileNamePhoto = mIntent.getStringExtra("foto_user");
 
-
-        if (mIntent.getStringExtra("foto_user") != null) {
-            Glide.with(mContext).load(APIClient
-                    .BASE_URL + mIntent.getStringExtra("foto_user")).into(foto_user);
-        }
-        else {
-//            Glide.with(getContext().)
+        if (fileNamePhoto != null){
+            Glide.with(getApplicationContext()).load(imagePath).into(foto_user);
+        } else {
             Glide.with(getApplicationContext()).load(R.drawable.ic_person_black_24dp).into(foto_user);
         }
-        image_path = mIntent.getStringExtra("foto_user");
 
+        imagePath = mIntent.getStringExtra("foto_user_url");
         final APIInterface mApiInterface = APIClient.getClient().create(APIInterface.class);
-//        ScrollView sView = (ScrollView) findViewById(R.id.login_form);
-//        sView.setVerticalScrollBarEnabled(false);
-//        sView.setHorizontalScrollBarEnabled(false);
-//
-//        ActionBar menu = getSupportActionBar();
-//        menu.setDisplayHomeAsUpEnabled(true);
-//        menu.setDisplayShowHomeEnabled(true);
+
 //
         edit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-//                int selectedId = rg.getCheckedRadioButtonId();
-////                final RadioButton radioButton = (RadioButton) findViewById(selectedId);
-//                if(selectedId == rl.getId()){
-//                    jenisKel = "L";
-//                }
-//                else{
-//                    jenisKel ="P";
-//                }
+
                 MultipartBody.Part body = null;
-                //dicek apakah image sama dengan yang ada di server atau berubah
-                //jika sama dikirim lagi jika berbeda akan dikirim ke server
-//                if ((!image_path.contains("uploads/" )) &&
-//                        (image_path.length() > 0)) {
+                if ((!imagePath.contains("uploads/" + fileNamePhoto)) &&
+                        (imagePath.length()>0)){
                     //File creating from selected URL
-//                    File file = new File(image_path);
+                    File file = new File(imagePath);
 
                     // create RequestBody instance from file
-//                    RequestBody requestFile = RequestBody.create(
-//                            MediaType.parse("multipart/form-data"), file);
+                    RequestBody requestFile = RequestBody.create(
+                            MediaType.parse("multipart/form-data"), file);
 
                     // MultipartBody.Part is used to send also the actual file name
-//                    body = MultipartBody.Part.createFormData("foto_user", file.getName(),
-//                            requestFile);
-//                }
+                    body = MultipartBody.Part.createFormData("foto_user", file.getName(),
+                            requestFile);
+                }
                 RequestBody reqid_user =
                         MultipartBody.create(parse("multipart/form-data"),
                               id_user);
@@ -175,7 +170,7 @@ public class EditProfilActivity extends AppCompatActivity {
                                         "" : edt_password.getText().toString());
 
 
-                Call<GetEditProfil> callUpdate = mApiInterface.postEditProfil(reqid_user, reqnama,
+                Call<GetEditProfil> callUpdate = mApiInterface.postEditProfil(body,reqid_user, reqnama,
                         reqno_hp, reqemail, requsername, reqpassword);
 
                 callUpdate.enqueue(new Callback<GetEditProfil>() {
@@ -202,16 +197,88 @@ public class EditProfilActivity extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mintaPermissions();
+//                if (!isDeviceSupportCamera()) {
+//                    Toast.makeText(getApplicationContext(),"Camera di device anda tidak tersedia",
+//                            Toast.LENGTH_LONG).show();
+//                    Log.d("Camera", "gak ada kamera!!");
+//                    finish();
+//                } else {
+//                    Log.d("Camera", "ada kamera");
+//                    captureImage();
+//
+//                }
+//                mintaPermissions();
+                final Intent galleryIntent = new Intent();
+                galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_PICK);
+                Intent intentChoose = Intent.createChooser(galleryIntent, "Pilih foto untuk " +
+                        "di-upload");
+                startActivityForResult(intentChoose, 10);
             }
         });
 
 
+
+    }
+    private boolean isDeviceSupportCamera() {
+        if (getApplicationContext().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // Ok, device punya camera
+            return true;
+        } else {
+            // Device masih mendol
+            return false;
+        }
+    }
+    private void captureImage() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+
+            // requestCode 100 untuk membedakan
+            startActivityForResult(takePictureIntent, 100);
+        }
     }
 
     private void mintaPermissions() {
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.CAMERA)
+                .withListener(new MultiplePermissionsListener() {
 
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // Cek apakah semua permission yang diperlukan sudah diijinkan
+                        if (report.areAllPermissionsGranted()) {
+                            Toast.makeText(getApplicationContext(),
+                                    "Semua permissions diijinkan!", Toast.LENGTH_SHORT).show();
+                            tampilkanFotoDialog();
+                        }
+
+                        // Cek apakah ada permission yang tidak diijinkan
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // Info user untuk mengubah setting permission
+                            tampilkanSettingsDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+
+                    }
+                }).
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        Toast.makeText(getApplicationContext(),
+                                "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .onSameThread()
+                .check();
     }
+
     private void tampilkanFotoDialog() {
         AlertDialog.Builder fotoDialog = new AlertDialog.Builder(this);
         fotoDialog.setTitle("Select Action");
@@ -235,6 +302,7 @@ public class EditProfilActivity extends AppCompatActivity {
                 });
         fotoDialog.show();
     }
+
     public void pilihDariGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -276,40 +344,32 @@ public class EditProfilActivity extends AppCompatActivity {
         intent.setData(uri);
         startActivityForResult(intent, 101);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CANCELED) {
-            return;
-        }
-        // Jika request berasal dari Gallery
-        if (requestCode == 13) {
-            if (data != null) {
-                Uri contentURI = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    image_path = simpanImage(bitmap);
-                    Toast.makeText(mContext, "Foto berhasil di-load!", Toast.LENGTH_SHORT).show();
-
-                    Glide.with(mContext).load(new File(image_path)).into(foto_user);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(mContext, "Foto gagal di-load!", Toast.LENGTH_SHORT).show();
-                }
+        if (resultCode == RESULT_OK && requestCode == 10) {
+            if (data == null) {
+                Toast.makeText(mContext, "Foto gagal di-load", Toast.LENGTH_LONG).show();
+                return;
             }
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                imagePath = cursor.getString(columnIndex);
 
-            // Jika request dari Camera
-        } else if (requestCode == 16) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            image_path = simpanImage(thumbnail);
-            Toast.makeText(mContext, "Foto berhasil di-load dari Camera!", Toast.LENGTH_SHORT)
-                    .show();
-
-            Glide.with(mContext).load(new File(image_path)).into(foto_user);
+                //Picasso.with(mContext).load(new File(imagePath)).fit().into(mImageView);
+                Glide.with(getApplicationContext()).load(new File(imagePath)).into(foto_user);
+                cursor.close();
+            } else {
+                Toast.makeText(getApplicationContext(), "Foto gagal di-load", Toast.LENGTH_LONG).show();
+            }
         }
 
-    }
+        }
     public String simpanImage(Bitmap myBitmap){
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 
@@ -318,7 +378,7 @@ public class EditProfilActivity extends AppCompatActivity {
 
         // Buat object direktori file
         File lokasiImage = new File(
-                Environment.getExternalStorageDirectory() + "/praktikum");
+                Environment.getExternalStorageDirectory() + "/kostum");
 
         // Buat direktori untuk penyimpanan
         if (!lokasiImage.exists()) {
@@ -339,18 +399,15 @@ public class EditProfilActivity extends AppCompatActivity {
                     new String[]{"image/jpeg"}, null);
             fo.close();
 
-            Log.d("PRAKTIKUM", "File tersimpan di --->" + f.getAbsolutePath());
+            Log.d("Foto", "File tersimpan di --->" + f.getAbsolutePath());
 
             // Return file
             return f.getAbsolutePath();
 
         } catch (IOException e1) {
-            Log.d("PRAKTIKUM", "erroraaaaa");
             e1.printStackTrace();
         }
         return "";
     }
-
-
 
 }

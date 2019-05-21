@@ -31,21 +31,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/profile_image"
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:src="@drawable/ic_launcher_foreground"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#ffffff"/>
-
                 <TextView
                     android:id="@+id/tx_nama"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ffffff"
-                    android:text="Nama Pemilik"/>
+                    android:text="Nama"
+                    />
 
                 <LinearLayout
 
@@ -66,11 +57,11 @@
                         android:textColor="#ffffff" />
 
                     <Button
+                        android:id="@+id/btn_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#E91E63"
                         android:text="Logout"
-                        android:id="@+id/btn_logout"
                         android:textColor="#ffffff" />
 
 

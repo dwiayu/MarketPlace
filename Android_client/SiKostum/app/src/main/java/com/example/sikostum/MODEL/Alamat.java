@@ -58,6 +58,12 @@ public class Alamat {
     public String getId_alamat() {
         return id_alamat;
     }
+    public String getAlamatIn(){
+        return id_alamat;
+    }
+    public void setAlamatIn(String alamatIn){
+        this.id_alamat = alamat;
+    }
 
     public void setId_alamat(String id_alamat) {
         this.id_alamat = id_alamat;
@@ -67,9 +73,23 @@ public class Alamat {
         this.id_user = id_user;
         this.label_alamat = label_alamat;
         this.alamat = alamat;
+        this.id_alamat =alamat;
         this.kota = kota;
         this.action = action;
         this.id_alamat = id_alamat;
+        this.setId_alamat(id_alamat);
+        this.setAlamat(alamat);
 
     }
+    public String getIdAlamat(){
+        return id_alamat;
+    }
+    public  void setIdAlamat(String id_alamat ){
+        this.id_alamat=id_alamat;
+    }
+    @Override
+    public String toString(){
+        return alamat;
+    }
+    public void setName(String alamat){this.alamat=alamat;}
 }

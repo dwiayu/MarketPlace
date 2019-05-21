@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 public class Tempat {
     @SerializedName("id_tempat")
     private String id_tempat;
+    @SerializedName("alamat")
+    private String alamat;
     @SerializedName("id_user")
     private String id_user;
     @SerializedName("id_alamat")
@@ -104,10 +106,19 @@ public class Tempat {
         this.izin = izin;
     }
 
-    public Tempat(String id_tempat, String id_user, String id_alamat, String nama_tempat, String no_rekening,
+    public String getAlamat() {
+        return alamat;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public Tempat(String id_tempat, String alamat, String id_user, String id_alamat, String nama_tempat, String no_rekening,
                   String slogan_tempat, String deskripsi_tempat, String foto_tempat, String status_tempat,
                   String izin){
         this.id_tempat= id_tempat;
+        this.alamat=alamat;
         this.id_user = id_user;
         this.id_alamat= id_alamat;
         this.nama_tempat= nama_tempat;

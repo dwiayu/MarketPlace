@@ -189,13 +189,6 @@ function myidentitas_post(){
             )
          );
        }
-          
-        
-       
-    
-     
-   
-
 }    
 
     function uploadPhoto() {

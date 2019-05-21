@@ -19,6 +19,11 @@ class Tempat_sewa extends REST_Controller {
 	// 	$this->response($query,200);
 
 	// }
+	function alamat_get(){
+		$id_user = $this->get('id_user');
+		$query= $this->db->query("SELECT alamat from alamat where id_user='$id_user'")->result();
+		$this->response($query,200);
+	}
 	function all_get(){
 		$id_user = $this->get('id_user');
 		$query =$this->db->query("SELECT *

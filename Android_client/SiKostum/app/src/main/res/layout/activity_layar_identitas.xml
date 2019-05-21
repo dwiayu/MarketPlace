@@ -76,4 +76,12 @@
         android:layout_alignStart="@+id/textView"
         android:layout_alignTop="@+id/statusId"
         android:text="Status" />
+
+    <Button
+        android:id="@+id/btInsId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btUpId"
+        android:layout_centerHorizontal="true"
+        android:text="Insert" />
 </RelativeLayout>

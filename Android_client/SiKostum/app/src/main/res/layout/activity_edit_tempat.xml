@@ -25,7 +25,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/tvIdTempatS"
+    android:hint="Id tempat"/>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -124,6 +128,7 @@
                     android:text="Pilih Gambar" />
 
                 <ImageView
+                    android:id="@+id/fotoTem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_person_black_24dp"/>
@@ -154,7 +159,8 @@
                 <Spinner
                     android:id="@+id/status"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:entries="@array/status">
 
                 </Spinner>
 

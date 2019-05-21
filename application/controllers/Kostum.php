@@ -4,219 +4,234 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
-class Kostum extends REST_Controller {
-	private $folder_upload='uploads/';
+class TempatSewa extends REST_Controller {
+ // Konfigurasi letak folder untuk upload image
+ private $folder_upload = 'uploads/';
 	function __construct() {
         parent::__construct();
         $this->load->model("ModelLogin", "mdl");
 	}
-	
-	// function index_get(){
-	// 	$id_user = $this->get('id_user');
-	// 	$query =$this->db->query("SELECT user.nama, user.email, user.no_hp,
-	// 	  identitas.foto_ktp, identitas.foto_diri, identitas.status
-	// 	 FROM user join identitas  ON user.id_user=identitas.id_user AND user.id_user='$id_user'")->result();
-	// 	$this->response($query,200);
-
-	// }
-
-	function all_post(){
-		$action = $this->post('action');
-        $data_kostum = array(
-			'id_kostum' =>$this->post('id_kostum'),
-			'id_kategori' =>$this->post('id_kategori'),
-			'id_tempat' =>$this->post('id_tempat'),
-			'nama_kostum' => $this->post('nama_kostum'),
-			'jumlah_kostum' =>$this->post('jumlah_kostum'),
-			'harga_kostum' =>$this->post('harga_kostum'),
-			'deskripsi_kostum'=>$this->post('deskripsi_kostum'),
-           'foto_kostum' =>$this->post('foto_kostum')
-            // 'foto_kostum' => $this->post('foto_kostum')
+	function alamat_post(){
+		$id_user = $this->post('id_user');
+		$query= $this->db->query("SELECT id_alamat,alamat from alamat where id_user=$id_user")->result();
+        $this->response(
+            array(
+                "status" => "success",
+                "result" => $query
+            )
         );
-        switch ($action){
-            case 'insert';
-            $this->insertKostum($data_kostum);
-            break;
-
-            case 'update': 
-            $this->updateKostum($data_kostum);
-            break; 
-
-            case 'delete' : 
-            $this->deletekostum($data_kostum);
-            break;
-
-            default: 
-            $this->response (
+    }
+    function getTempat_post(){
+        $id_user= $this->post('id_user');
+        $getTempat = $this->db->query("
+        SELECT * FROM tempat_sewa WHERE id_user=$id_user")->result();
+        if(!empty($getTempat)){
+            $this->response(
                 array(
-                    "status" =>"failed", 
-                    "message" =>"action harus diisi"
+                    "status" => "success",
+                    "result" => $getTempat
                 )
-                );
-                break;
-        }
-	}
-	function insertkostum($data_kostum){
-        
-                // Cek validasi
-				if (empty($data_kostum['nama_kostum']) || empty($data_kostum['jumlah_kostum']) || empty($data_kostum['harga_kostum'])
-				|| empty($data_kostum['deskripsi_kostum'])){
-                    $this->response(
-                        array(
-                            "status" => "failed",
-                            "message" => "Lengkapi Data"
-                        )
+             );
+           }else{
+            $this->response(
+                array(
+                    "status" => "kosong"
+                )
+             );
+           }
+    }
+    function tampilTempat_post(){
+        $id_user = $this->post('id_user');
+        $get_tempatSewa = $this->db->query("SELECT t.id_tempat,t.id_user,t.nama_tempat,t.no_rekening,
+        t.slogan_tempat, t.deskripsi_tempat,t.foto_tempat, t.status_tempat, t.izin, a.alamat FROM tempat_sewa t join alamat a
+        WHERE t.id_alamat=a.id_alamat AND t.id_user= $id_user")->result();
+            if(!empty($get_tempatSewa)){
+                $this->response(
+                    array(
+                        "status" =>"success",
+                        "result"=>$get_tempatSewa
+                    )
                     );
-                } else {
-        
-                    $data_kostum['foto_kostum'] = $this->uploadPhoto();
-        
-                    $do_insert = $this->db->insert('kostum', $data_kostum);
-                   
-                    if ($do_insert){
-                        $this->response(
-                            array(
-                                "status" => "success",
-                                "result" => array($data_kostum),
-                                "message" => $do_insert
-                            )
-                        );
+               
+            }else{
+                $this->response(
+                    array(
+                        "status"=>"kosong"
+                    )
+                    );
+            }
+    }
+    function insertTempat_post(){
+        $izin='tunggu';
+        $data_tempatSewa = array(
+           
+            "id_user" =>$this->post("id_user"),
+            "id_alamat"=>$this->post("id_alamat"),
+            "nama_tempat" =>$this->post("nama_tempat"),
+            "no_rekening" =>$this->post("no_rekening"), 
+            "slogan_tempat" =>$this->post("slogan_tempat"),
+            "deskripsi_tempat" =>$this->post("deskripsi_tempat"),
+            "foto_tempat" => $this->post("foto_tempat"),
+            "status_tempat" =>$this->post("status_tempat"),
+            "izin" =>($izin)
+        );
+        if (empty($data_tempatSewa['id_alamat'])){
+            $this->response(array('status'=>'fail',"message"=>"id_alamat kosong"));
+          }
+          else{
+              $getid_alamat = $this->db->query("SELECT id_alamat,alamat from alamat WHERE id_alamat='".$data_tempatSewa['id_alamat']."'")->result();
+              $getid_user = $this->db->query("SELECT id_user from user where id_user='".$data_tempatSewa['id_user']."'")->result();
+              $message="";
+              if (empty($getid_alamat)) $message.="id_alamat tidak ada/salah ";
+              if (empty($getid_user)) {
+                if (empty($message)) {
+                  $message.="id_user tidak ada/salah";
+                }
+                else {
+                  $message.="dan id_user tidak ada/salah";
+                }
+              }
+              if (empty($message)){
+                $data_tempatSewa['foto_tempat']= $this->uploadPhoto();
+                $insert= $this->db->insert('tempat_sewa',$data_tempatSewa);
+                if ($insert){
+                  $this->response(
+                      array('status'=>'success',
+                      'result' => array($data_tempatSewa),
+                      "message"=>$insert));   
+                }
+                
+              }else{
+                $this->response(array('status'=>'fail',"message"=>$message));   
+              }
+              
+            }
+            
+          }
+          function updateTempat_post(){
+            $izin = 'tunggu';
+            $data_tempat= array(
+                'id_tempat' => $this->post('id_tempat'),
+                'id_alamat' =>$this->post('id_alamat'),
+                'nama_tempat' =>$this->post('nama_tempat'),
+                'no_rekening' =>$this->post('no_rekening'),
+                'slogan_tempat'=>$this->post('slogan_tempat'),
+                'deskripsi_tempat' =>$this->post('deskripsi_tempat'),
+                'foto_tempat' => $this->post('foto_tempat'),
+                'status_tempat' =>$this->post('status'),
+                'izin' =>($izin)
+            );
+            // Cek apakah ada di database
+            $get_user_baseID = $this->db->query("
+            SELECT 1
+            FROM tempat_sewa
+            WHERE id_tempat = {$data_tempat['id_tempat']}")->num_rows();
+
+        if($get_user_baseID === 0){
+            // Jika tidak ada
+            $this->response(
+                array(
+                    "status"  => "failed",
+                    "message" => "ID tempat tidak ditemukan"
+                )
+            );
+        } else {
+            // Jika ada
+            $data_tempat['foto_tempat'] = $this->uploadPhoto();
+
+            if ($data_tempat['foto_tempat']){
+                $get_photo_tempat =$this->db->query("
+                    SELECT foto_tempat
+                    FROM tempat_sewa
+                    WHERE id_tempat = {$data_tempat['id_tempat']}")->result();
+
+                if(!empty($get_photo_tempat)){
+
+                    // Dapatkan nama_user file
+                    $photo_nama_user_file = basename($get_photo_tempat[0]->foto_tempat);
+                    // Dapatkan letak file di folder upload
+                    $photo_lokasi_file = realpath(FCPATH . $this->folder_upload . $photo_nama_user_file);
+
+                    // Jika file ada, hapus
+                    if(file_exists($photo_lokasi_file)) {
+                        // Hapus file
+                        unlink($photo_lokasi_file);
                     }
                 }
+                // Jika upload foto berhasil, eksekusi update
+                $update = $this->db->query("
+                    UPDATE tempat_sewa SET
+                    id_alamat= '{$data_tempat['id_alamat']}',
+                    nama_tempat= '{$data_tempat['nama_tempat']}',
+                    no_rekening= '{$data_tempat['no_rekening']}',
+                    slogan_tempat= '{$data_tempat['slogan_tempat']}',
+                    deskripsi_tempat= '{$data_tempat['deskripsi_tempat']}',
+                    foto_tempat = '{$data_tempat['foto_tempat']}',
+                    status_tempat = '{$data_tempat['status_tempat']}',
+                    izin= '{$data_tempat['izin']}'
+                    WHERE id_tempat = '{$data_tempat['id_tempat']}'");
+
+            } else {
+                // Jika foto kosong atau upload foto tidak berhasil, eksekusi update
+                $update = $this->db->query("
+                    UPDATE tempat_sewa
+                    SET
+                    id_alamat= '{$data_tempat['id_alamat']}',
+                    nama_tempat= '{$data_tempat['nama_tempat']}',
+                    no_rekening= '{$data_tempat['no_rekening']}',
+                    slogan_tempat= '{$data_tempat['slogan_tempat']}',
+                    deskripsi_tempat= '{$data_tempat['deskripsi_tempat']}',
+                    status_tempat = '{$data_tempat['status_tempat']}',
+                    izin= '{$data_tempat['izin']}'
+                    WHERE id_tempat = {$data_tempat['id_tempat']}"
+                );
             }
-			function uploadPhoto() {
-				
-						// Apakah user upload gambar?
-						if ( isset($_FILES['foto_kostum']) && $_FILES['foto_kostum']['size'] > 0 ){
-				
-							// Foto disimpan di android-api/uploads
-							$config['upload_path'] = realpath(FCPATH . $this->folder_upload);
-							$config['allowed_types'] = 'jpg|png';
-				
-							// Load library upload & helper
-							$this->load->library('upload', $config);
-							$this->load->helper('url');
-				
-							// Apakah file berhasil diupload?
-							if ( $this->upload->do_upload('foto_kostum')) {
-				
-							   // Berhasil, simpan nama file-nya
-							   // URL image yang disimpan adalah http://localhost/android-api/uploads/namafile
-							   $img_data = $this->upload->data();
-							   $post_image = base_url(). $this->folder_upload .$img_data['file_name'];
-				
-							} else {
-				
-								// Upload gagal, beri nama image dengan errornya
-								// Ini bodoh, tapi efektif
-								$post_image = $this->upload->display_errors();
-								
-							}
-						} else {
-							// Tidak ada file yang di-upload, kosongkan nama image-nya
-							$post_image = '';
-						}
-				
-						return $post_image;
-					}
-	function updatekostum($data_kostum){
-		if(empty($data_kostum['nama_kostum']) || empty($data_kostum['jumlah_kostum']) ||
-			empty($data_kostum['harga_kostum']) || empty($data_kostum['deskripsi_kostum'])){
-				$this->response(
-				array(
-					"status" =>"failed",
-					"message" => "Lengkapi semua data"             
-					)
-					);
-		}else {
-			$get_kostum_baseID= $this->db->query("
-				SELECT id_kostum
-				FROM kostum WHERE id_kostum = {$data_kostum['id_kostum']}")->num_rows();
-					if ($get_kostum_baseID ==0){
-						$this->response(
-					array(
-							"status" => "failed",
-							"message" =>"ID kostum tidak ditemukan"
-						)
-						);
-					}else{
-						$data_kostum['foto_kostum'] = $this->uploadPhoto();
-							if($data_kostum['foto_kostum']){
-								$update = $this->db->query(" 
-									UPDATE kostum SET 
-									nama_kostum = '{$data_kostum['nama_kostum']}',
-									jumlah_kostum = '{$data_kostum['jumlah_kostum']}',
-									harga_kostum = '{$data_kostum['harga_kostum']}',
-									deskripsi_kostum = '{$data_kostum['deskripsi_kostum']}',
-									foto_kostum = '{$data_kostum['foto_kostum']}'
-									WHERE id_kostum = '{$data_kostum['id_kostum']}'");
-							}else{
-								$update = $this->db->query("
-									UPDATE kostum
-									SET
-										nama_kostum = '{$data_kostum['nama_kostum']}',
-										jumlah_kostum ='{$data_kostum['jumlah_kostum']}',
-										harga_kostum  = '{$data_kostum['harga_kostum']}',
-										deskripsi_kostum = '{$data_kostum['deskripsi_kostum']}'
-									WHERE id_kostum = {$data_kostum['id_kostum']}"
-								);
-								}
-								if($update){
-									$this->response(
-										array(
-											"status" => "success", 
-											"result" => array ($data_kostum),
-											"message" =>$update
-										)
-										);
-								}
-							}
-						}
-					} 
-		function deleteKostum($data_kostum){
-			if(empty($data_kostum['id_kostum'])){
-				$this->response(
-					array(
-						"status" =>"failed",
-						"message" =>"ID kostum harus diisi"
-					)
-					);
-			}else{
-				$get_kostum_baseID = $this->db->query("
-				SELECT 1
-				FROM kostum 
-				WHERE id_kostum = {$data_kostum['id_kostum']}")->num_rows(); 
-				if($get_kostum_baseID>0){
-					$get_foto_kostum = $this->db->query("
-					SELECT foto_kostum
-					FROM kostum
-					WHERE id_kostum = {$data_kostum['id_kostum']}")->result();
-	
-					if(!empty($get_foto_kostum)){
-						$photo_nama_file = basename($get_foto_kostum[0]->foto_kostum);
-						$photo_lokasi_file = realpath(FCPATH . $this->folder_upload . $photo_nama_file);
-	
-					if(file_exists($photo_lokasi_file)){
-						unlink($photo_lokasi_file);
-					}
-					$this->db->query("
-						DELETE FROM kostum 
-						WHERE id_kostum = {$data_kostum['id_kostum']}");
-						$this->response(
-							array(
-								"status" =>"success", 
-								"message" => "Data ID = " .$data_kostum['id_kostum']. "berhasil dihapus"
-							)
-							);
-					}
-				}else{
-					$this->response(
-						array(
-							"status" => "failed",
-							"message" => "ID kostum tidak ditemukan"
-						)
-						);
-				}
-			}
-		}
-}
+
+            if ($update){
+                $this->response(
+                    array(
+                        "status"    => "success",
+                        "result"    => array($data_tempat),
+                        "message"   => $update
+                    )
+                );
+            }
+        }
+        }
+
+    function uploadPhoto() {
+        
+                // Apakah user upload gambar?
+                if ( isset($_FILES['foto_tempat']) && $_FILES['foto_tempat']['size'] > 0 ){
+        
+                    // Foto disimpan di android-api/uploads
+                    $config['upload_path'] = realpath(FCPATH . $this->folder_upload);
+                    $config['allowed_types'] = 'jpg|png';
+        
+                    // Load library upload & helper
+                    $this->load->library('upload', $config);
+                    $this->load->helper('url');
+        
+                    // Apakah file berhasil diupload?
+                    if ( $this->upload->do_upload('foto_tempat')) {
+        
+                       // Berhasil, simpan nama_user file-nya
+                       $img_data = $this->upload->data();
+                       $post_image = $img_data['file_name'];
+        
+                   } else {
+        
+                        // Upload gagal, beri nama_user image dengan errornya
+                        // Ini bodoh, tapi efektif
+                    $post_image = $this->upload->display_errors();
+        
+                }
+            } else {
+                    // Tidak ada file yang di-upload, kosongkan nama_user image-nya
+                $post_image = '';
+            }
+        
+            return $post_image;
+        }
+
+    }

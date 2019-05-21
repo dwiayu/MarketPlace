@@ -13,6 +13,7 @@ import com.example.sikostum.MODEL.ProfilId;
 
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -101,6 +102,7 @@ public interface APIInterface {
     @Multipart
     @POST("profil/myedit")
     Call<GetEditProfil>postEditProfil(
+            @Part MultipartBody.Part file,
             @Part("id_user") RequestBody id_user,
             @Part("nama") RequestBody nama,
             @Part("no_hp") RequestBody no_hp,
@@ -162,7 +164,7 @@ public interface APIInterface {
         @Part("id_alamat") RequestBody id_alamat
 );
 @Multipart
-    @POST("TempatSewa/insertAlamat")
+    @POST("TempatSewa/insertTempat")
     Call<GetTempat>posTempat(
         @Part MultipartBody.Part file,
             @Part("id_user") RequestBody id_user,
@@ -171,12 +173,30 @@ public interface APIInterface {
             @Part("no_rekening") RequestBody no_rekening,
             @Part("slogan_tempat") RequestBody slogan_tempat,
             @Part("deskripsi_tempat")RequestBody deskripsi_tempat,
-            @Part("status_tempat") RequestBody status_tempat,
-            @Part("izin") RequestBody izin
+            @Part("status_tempat") RequestBody status_tempat
 );
+@Multipart
+    @POST("TempatSewa/alamat")
+    Call<GetAlamat>getAlm(
+            @Part("id_user") RequestBody id_user
+//            @Part("id_alamat") RequestBody id_alamat
 
-
-
-
-
+);
+@Multipart
+    @POST("TempatSewa/tampilTempat")
+    Call<GetTempat>getTempat(
+            @Part("id_user") RequestBody id_user
+);
+@Multipart
+    @POST("TempatSewa/updateTempat")
+    Call<GetTempat>putTempat(
+        @Part MultipartBody.Part file,
+        @Part("id_tempat") RequestBody id_tempat,
+        @Part("id_alamat") RequestBody id_alamat,
+        @Part("nama_tempat") RequestBody nama_tempat,
+        @Part("no_rekening") RequestBody no_rekening,
+        @Part("slogan_tempat") RequestBody slogan_tempat,
+        @Part("deskripsi_tempat") RequestBody deskrisi_tempat,
+        @Part("status") RequestBody status
+        );
 }

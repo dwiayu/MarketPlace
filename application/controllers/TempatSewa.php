@@ -11,7 +11,35 @@ class TempatSewa extends REST_Controller {
         parent::__construct();
         $this->load->model("ModelLogin", "mdl");
 	}
-	
+	function alamat_post(){
+		$id_user = $this->post('id_user');
+		$query= $this->db->query("SELECT id_alamat,alamat from alamat where id_user=$id_user")->result();
+        $this->response(
+            array(
+                "status" => "success",
+                "result" => $query
+            )
+        );
+    }
+    function getTempat_post(){
+        $id_user= $this->post('id_user');
+        $getTempat = $this->db->query("
+        SELECT * FROM tempat_sewa WHERE id_user=$id_user")->result();
+        if(!empty($getTempat)){
+            $this->response(
+                array(
+                    "status" => "success",
+                    "result" => $getTempat
+                )
+             );
+           }else{
+            $this->response(
+                array(
+                    "status" => "kosong"
+                )
+             );
+           }
+    }
     function tampilTempat_post(){
         $id_user = $this->post('id_user');
         $get_tempatSewa = $this->db->query("SELECT t.id_tempat,t.id_user,t.nama_tempat,t.no_rekening,
@@ -34,8 +62,9 @@ class TempatSewa extends REST_Controller {
             }
     }
     function insertTempat_post(){
+        $izin='tunggu';
         $data_tempatSewa = array(
-            "id_tempat" =>$this->post("id_tempat"),
+           
             "id_user" =>$this->post("id_user"),
             "id_alamat"=>$this->post("id_alamat"),
             "nama_tempat" =>$this->post("nama_tempat"),
@@ -44,13 +73,13 @@ class TempatSewa extends REST_Controller {
             "deskripsi_tempat" =>$this->post("deskripsi_tempat"),
             "foto_tempat" => $this->post("foto_tempat"),
             "status_tempat" =>$this->post("status_tempat"),
-            "izin" =>$this->post("izin")
+            "izin" =>($izin)
         );
         if (empty($data_tempatSewa['id_alamat'])){
             $this->response(array('status'=>'fail',"message"=>"id_alamat kosong"));
           }
           else{
-              $getid_alamat = $this->db->query("SELECT id_alamat from alamat WHERE id_alamat='".$data_tempatSewa['id_alamat']."'")->result();
+              $getid_alamat = $this->db->query("SELECT id_alamat,alamat from alamat WHERE id_alamat='".$data_tempatSewa['id_alamat']."'")->result();
               $getid_user = $this->db->query("SELECT id_user from user where id_user='".$data_tempatSewa['id_user']."'")->result();
               $message="";
               if (empty($getid_alamat)) $message.="id_alamat tidak ada/salah ";
@@ -80,23 +109,23 @@ class TempatSewa extends REST_Controller {
             
           }
           function updateTempat_post(){
-              $data_tempatSewa= array(
-                'id_tempat' =>$this->post('id_tempat'),
-                'id_user' =>$this->post('id_user'),
-                'id_alamat'=>$this->post('id_alamat'),
+            $izin = 'tunggu';
+            $data_tempat= array(
+                'id_tempat' => $this->post('id_tempat'),
+                'id_alamat' =>$this->post('id_alamat'),
                 'nama_tempat' =>$this->post('nama_tempat'),
-                'no_rekening' =>$this->post('no_rekening'), 
-                'slogan_tempat' =>$this->post('slogan_tempat'),
+                'no_rekening' =>$this->post('no_rekening'),
+                'slogan_tempat'=>$this->post('slogan_tempat'),
                 'deskripsi_tempat' =>$this->post('deskripsi_tempat'),
                 'foto_tempat' => $this->post('foto_tempat'),
-                'status_tempat' =>$this->post('status_tempat'),
-                'izin' =>$this->post('izin')
-              );
-               // Cek apakah ada di database
+                'status_tempat' =>$this->post('status'),
+                'izin' =>($izin)
+            );
+            // Cek apakah ada di database
             $get_user_baseID = $this->db->query("
             SELECT 1
             FROM tempat_sewa
-            WHERE id_tempat = {$data_tempatSewa['id_tempat']}")->num_rows();
+            WHERE id_tempat = {$data_tempat['id_tempat']}")->num_rows();
 
         if($get_user_baseID === 0){
             // Jika tidak ada
@@ -106,72 +135,70 @@ class TempatSewa extends REST_Controller {
                     "message" => "ID tempat tidak ditemukan"
                 )
             );
-              }else{
-                
-                   // Jika ada
-            $data_tempatSewa['foto_tempat'] = $this->uploadPhoto();
-            
-                        if ($data_tempatSewa['foto_tempat']){
-                            $get_photo_tempat =$this->db->query("
-                                SELECT foto_tempat
-                                FROM tempat_sewa
-                                WHERE id_tempat = {$data_tempatSewa['id_tempat']}")->result();
-            
-                            if(!empty($get_photo_tempat)){
-            
-                                // Dapatkan nama_user file
-                                $photo_nama_user_file = basename($get_photo_tempat[0]->foto_tempat);
-                                // Dapatkan letak file di folder upload
-                                $photo_lokasi_file = realpath(FCPATH . $this->folder_upload . $photo_nama_user_file);
-            
-                                // Jika file ada, hapus
-                                if(file_exists($photo_lokasi_file)) {
-                                    // Hapus file
-                                    unlink($photo_lokasi_file);
-                                }
-                            }
-                            // Jika upload foto berhasil, eksekusi update
-                            $update = $this->db->query("
-                                UPDATE tempat_sewa SET
-                                id_tempat='{$data_tempatSewa['id_tempat']}',
-                                id_alamat ='{$data_tempatSewa['id_alamat']}',
-                                nama_tempat='{$data_tempatSewa['nama_tempat']}',
-                                no_rekening='{$data_tempatSewa['no_rekening']}',
-                                slogan_tempat='{$data_tempatSewa['slogan_tempat']}',
-                                deskripsi_tempat='{$data_tempatSewa['deskripsi_tempat']}',
-                                foto_tempat = '{$data_tempatSewa['foto_tempat']}',
-                                status_tempat = '{$data_tempatSewa['status_tempat']}',
-                                izin = '{$data_tempatSewa['izin']}'
-                                WHERE id_tempat= '{$data_tempatSewa['id_tempat']}'");
-            
-                        } else {
-                            // Jika foto kosong atau upload foto tidak berhasil, eksekusi update
-                            $update = $this->db->query("
-                                UPDATE tempat_sewa
-                                SET
-                                id_tempat='{$data_tempatSewa['id_tempat']}',
-                                id_alamat ='{$data_tempatSewa['id_alamat']}',
-                                nama_tempat='{$data_tempatSewa['nama_tempat']}',
-                                no_rekening='{$data_tempatSewa['no_rekening']}',
-                                slogan_tempat='{$data_tempatSewa['slogan_tempat']}',
-                                deskripsi_tempat='{$data_tempatSewa['deskripsi_tempat']}',
-                                status_tempat = '{$data_tempatSewa['status_tempat']}',
-                                izin = '{$data_tempatSewa['izin']}'
-                                WHERE id_tempat= '{$data_tempatSewa['id_tempat']}'"
-                            );
-                        }
-            
-                        if ($update){
-                            $this->response(
-                                array(
-                                    "status"    => "success",
-                                    "result"    => array($data_tempatSewa),
-                                    "message"   => $update
-                                )
-                            );
-                        }
+        } else {
+            // Jika ada
+            $data_tempat['foto_tempat'] = $this->uploadPhoto();
+
+            if ($data_tempat['foto_tempat']){
+                $get_photo_tempat =$this->db->query("
+                    SELECT foto_tempat
+                    FROM tempat_sewa
+                    WHERE id_tempat = {$data_tempat['id_tempat']}")->result();
+
+                if(!empty($get_photo_tempat)){
+
+                    // Dapatkan nama_user file
+                    $photo_nama_user_file = basename($get_photo_tempat[0]->foto_tempat);
+                    // Dapatkan letak file di folder upload
+                    $photo_lokasi_file = realpath(FCPATH . $this->folder_upload . $photo_nama_user_file);
+
+                    // Jika file ada, hapus
+                    if(file_exists($photo_lokasi_file)) {
+                        // Hapus file
+                        unlink($photo_lokasi_file);
                     }
-                    }
+                }
+                // Jika upload foto berhasil, eksekusi update
+                $update = $this->db->query("
+                    UPDATE tempat_sewa SET
+                    id_alamat= '{$data_tempat['id_alamat']}',
+                    nama_tempat= '{$data_tempat['nama_tempat']}',
+                    no_rekening= '{$data_tempat['no_rekening']}',
+                    slogan_tempat= '{$data_tempat['slogan_tempat']}',
+                    deskripsi_tempat= '{$data_tempat['deskripsi_tempat']}',
+                    foto_tempat = '{$data_tempat['foto_tempat']}',
+                    status_tempat = '{$data_tempat['status_tempat']}',
+                    izin= '{$data_tempat['izin']}'
+                    WHERE id_tempat = '{$data_tempat['id_tempat']}'");
+
+            } else {
+                // Jika foto kosong atau upload foto tidak berhasil, eksekusi update
+                $update = $this->db->query("
+                    UPDATE tempat_sewa
+                    SET
+                    id_alamat= '{$data_tempat['id_alamat']}',
+                    nama_tempat= '{$data_tempat['nama_tempat']}',
+                    no_rekening= '{$data_tempat['no_rekening']}',
+                    slogan_tempat= '{$data_tempat['slogan_tempat']}',
+                    deskripsi_tempat= '{$data_tempat['deskripsi_tempat']}',
+                    status_tempat = '{$data_tempat['status_tempat']}',
+                    izin= '{$data_tempat['izin']}'
+                    WHERE id_tempat = {$data_tempat['id_tempat']}"
+                );
+            }
+
+            if ($update){
+                $this->response(
+                    array(
+                        "status"    => "success",
+                        "result"    => array($data_tempat),
+                        "message"   => $update
+                    )
+                );
+            }
+        }
+        }
+
     function uploadPhoto() {
         
                 // Apakah user upload gambar?
@@ -207,4 +234,4 @@ class TempatSewa extends REST_Controller {
             return $post_image;
         }
 
-}
+    }

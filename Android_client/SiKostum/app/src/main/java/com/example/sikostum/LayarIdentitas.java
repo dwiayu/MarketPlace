@@ -33,6 +33,7 @@ public class LayarIdentitas extends AppCompatActivity {
     TextView statusId,tvIdentitas;
     Button btEditId;
     Button btKembaliId;
+    Button btInsId;
     String id_user;
     APIInterface mAPIInterface;
     String url_photo, photoName;
@@ -45,12 +46,21 @@ public class LayarIdentitas extends AppCompatActivity {
 
         tvIdentitas =(TextView) findViewById(R.id.tvIdentitas);
 
+        btInsId =(Button) findViewById(R.id.btInsId);
         gbrId = (ImageView) findViewById(R.id.gbrId);
         statusId = (TextView) findViewById(R.id.statusId);
         btEditId = (Button) findViewById(R.id.btUpId);
         btKembaliId = (Button) findViewById(R.id.btKembaliId);
         id_user = SaveSharedPreferences.getId(getApplicationContext());
+
         getIdentitas();
+        btInsId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mIntent = new Intent(getApplicationContext(),Identitas.class);
+                startActivity(mIntent);
+            }
+        });
 
         btEditId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +77,9 @@ public class LayarIdentitas extends AppCompatActivity {
         });
 
     }
+
     private void getIdentitas(){
+
         mAPIInterface = APIClient.getClient().create(APIInterface.class);
        RequestBody reqid_user= MultipartBody.create(MediaType.parse("multipart/form-data"),
                (id_user));
@@ -78,7 +90,9 @@ public class LayarIdentitas extends AppCompatActivity {
            public void onResponse(Call<GetIdentitas> call, Response<GetIdentitas> response) {
                Log.d("My Identitas", response.body().getStatus());
                if(response.body(). getStatus().equals("success")){
-
+                    btEditId.setEnabled(true);
+                    btInsId.setEnabled(false);
+                    btKembaliId.setEnabled(true);
                    tvIdentitas.setText(response.body().getResult().get(0).getId_identitas());
                    statusId.setText(response.body().getResult().get(0).getStatus());
 
@@ -92,6 +106,9 @@ public class LayarIdentitas extends AppCompatActivity {
 
 
                } else if(response.body(). getStatus().equals("kosong")){
+                   btInsId.setEnabled(true);
+                   btEditId.setEnabled(false);
+                   btKembaliId.setEnabled(true);
                    tvIdentitas.setText("kosong");
                    statusId.setText("kosong");
 
