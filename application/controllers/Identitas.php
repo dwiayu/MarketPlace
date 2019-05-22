@@ -20,7 +20,8 @@ class Identitas extends REST_Controller {
 	// 	$query= $this->db->query("SELECT nama,alamat FROM user where id_user='$id_user'")->result();
 	// 	$this->response($query,200);
 
-	// }
+    // }
+    
     function all_get(){
         $get_identitas = $this->db->query("
             SELECT * FROM identitas")->result();

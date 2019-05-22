@@ -21,6 +21,24 @@ class TempatSewa extends REST_Controller {
             )
         );
     }
+    function statusIdentitas_post(){
+        $id_user=$this->post('id_user');
+        $getStatusID =$this->db->query("
+        SELECT * from identitas join user ON user.id_user = identitas.id_user WHERE status!='valid' AND user.id_user=$id_user")->result();
+
+        if(!empty($getStatusID)){
+            $this->response(array(
+                "status" =>"success",
+                "result" =>$getStatusID
+            ));
+        }else{
+            $this->response(array(
+                "status" =>"valid",
+                "result" =>$getStatusID
+            ));
+        }
+       
+    }
     function getTempat_post(){
         $id_user= $this->post('id_user');
         $getTempat = $this->db->query("
@@ -40,6 +58,7 @@ class TempatSewa extends REST_Controller {
              );
            }
     }
+ 
     function tampilTempat_post(){
         $id_user = $this->post('id_user');
         $get_tempatSewa = $this->db->query("SELECT t.id_tempat,t.id_user,t.nama_tempat,t.no_rekening,

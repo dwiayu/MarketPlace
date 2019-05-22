@@ -93,7 +93,7 @@ public class LayarEditAlamat extends AppCompatActivity {
 //                            tvMsg.setText("Retrofit Update \n Status = " + response.body().getStatus() + "\n" +
 //                                    "Message = " + response.body().getMessage() + detail);
 //                        }
-                        Log.d("EditReview", response.body().getStatus());
+                        Log.d("EditTempat", response.body().getStatus());
                         if (response.body().getStatus().equals("failed")){
                             Toast.makeText(LayarEditAlamat.this, "Gagal Edit", Toast.LENGTH_SHORT).show();
                         }else{

@@ -1,5 +1,6 @@
 package com.example.sikostum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -12,76 +13,41 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class SewaFragment extends Fragment {
-    private TabLayout tabLayout;
-    private ViewPager firstViewPager;
-    private Toolbar toolbar;
+    Button pemesanan, sewa;
 
+
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-
-
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_sewa, container, false);
-        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        Menu menu = toolbar.getMenu();
-        toolbar.setTitle("Pemesanan Sewa");
+        pemesanan = rootView.findViewById(R.id.pemesanan_menu);
+        sewa = rootView.findViewById(R.id.sewa_menu);
 
-        firstViewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
+        pemesanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent mIntent= new Intent(getContext(),DaftarPemesanan.class);
+               startActivity(mIntent);
+            }
+        });
 
-        tabLayout = (TabLayout) rootView.findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(firstViewPager);
-
-        setupViewPager(firstViewPager);
+        sewa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //isi intent;
+            }
+        });
         return rootView;
 
-    }
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new PemesananFragment(), "Pemesanan");
-        adapter.addFragment(new VerifikasiFragment(), "Verifikasi");
-        adapter.addFragment(new SewaMasukFragment(), "Sewa");
-        viewPager.setAdapter(adapter);
-    }
-    static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public Adapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
     }
 
 

@@ -12,10 +12,10 @@
 
         <ImageView
             android:id="@+id/foto_user"
-            android:background="#2196F3"
+            android:background="#03A9F4"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/ic_person_black_24dp"/>
+            />
         <LinearLayout
             android:orientation="vertical"
             android:id="@+id/linear1"
@@ -31,12 +31,21 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/profile_image"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#ffffff"/>
+
                 <TextView
                     android:id="@+id/tx_nama"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nama"
-                    />
+                    android:textColor="#ffffff"
+                    android:text="Nama Pemilik"/>
 
                 <LinearLayout
 
@@ -57,11 +66,11 @@
                         android:textColor="#ffffff" />
 
                     <Button
-                        android:id="@+id/btn_logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#E91E63"
                         android:text="Logout"
+                        android:id="@+id/btn_logout"
                         android:textColor="#ffffff" />
 
 
@@ -87,7 +96,7 @@
                     android:orientation="vertical"
                     android:layout_height="match_parent">
                     <Button
-                        android:id="@+id/bt_alamat"
+                        android:id="@+id/btn_alamat"
                         android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -95,7 +104,7 @@
                         android:textColor="#ffffff"
                         android:text="Alamat"/>
                     <Button
-                        android:id="@+id/bt_identitas"
+                        android:id="@+id/btn_identitas"
                         android:layout_margin="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

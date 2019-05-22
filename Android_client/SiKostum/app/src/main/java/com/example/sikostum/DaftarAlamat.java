@@ -41,6 +41,7 @@ public class DaftarAlamat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daftar_alamat);
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         bt_get = (Button) findViewById(R.id.btGet);
         mContext = getApplicationContext();
@@ -79,4 +80,5 @@ public class DaftarAlamat extends AppCompatActivity {
             }
         });
     }
+
 }

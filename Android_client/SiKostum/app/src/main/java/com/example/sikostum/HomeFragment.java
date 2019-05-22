@@ -11,7 +11,7 @@ import android.widget.Button;
 
 
 public class HomeFragment extends Fragment {
-    private Button tempat_sewa;
+    private Button tempat_sewa,kostum;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,13 +22,20 @@ public class HomeFragment extends Fragment {
         View rootView =inflater.inflate(R.layout.fragment_home, null);
 
         tempat_sewa = rootView.findViewById(R.id.tempat_sewa_menu);
-
+        kostum = rootView.findViewById(R.id.kostum_menu);
 
 
         tempat_sewa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), TempatSewaActivity.class);
+                startActivity(intent);
+            }
+        });
+        kostum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(getContext(),DaftarKostum.class);
                 startActivity(intent);
             }
         });

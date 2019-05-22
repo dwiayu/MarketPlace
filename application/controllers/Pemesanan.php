@@ -4,25 +4,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
-class Kostum extends REST_Controller {
+class Pemesanan extends REST_Controller {
  // Konfigurasi letak folder untuk upload image
  private $folder_upload = 'uploads/';
 	function __construct() {
         parent::__construct();
         $this->load->model("ModelLogin", "mdl");
     }
-    function tampilKostum_post(){
+
+    // SELECT u.id_user,t.id_tempat,u.nama,al.alamat, s.tgl_transaksi,k.nama_kostum,d.jumlah, k.harga_kostum,l.status_log,
+    // FROM log l join detail d ON l.id_detail=d.id_detail
+    // join sewa s ON s.id_sewa = d.id_sewa
+    // JOIN kostum k ON d.id_kostum=k.id_kostum
+    // JOIN user u ON u.id_user=s.id_user
+    // JOIN tempat_sewa t ON t.id_tempat=k.id_tempat
+    // JOIN tempat_sewa t ON t.id_user=u.id_user
+    // join alamat al ON s.id_alamat= al.id_alamat
+   
+    // WHERE t.id_user = $id_user AND l.status_log='valid'
+
+    function tampilPemesanan_post(){
         $id_user = $this->post('id_user');
-        $get_tampil_kostum = $this->db->query("
-        SELECT u.id_user,t.id_user,t.id_tempat,k.id_tempat, k.id_kategori,k.id_kostum, k.nama_kostum,
-        k.jumlah_kostum, k.harga_kostum, k.deskripsi_kostum,k.foto_kostum, ka.nama_kategori
-        FROM kostum k JOIN kategori ka ON k.id_kategori=ka.id_kategori 
-        JOIN tempat_sewa t ON t.id_tempat=k.id_tempat join user u ON u.id_user=t.id_user WHERE t.id_user=$id_user")->result();
-        $this->response(array(
-            "status" =>"success",
-            "result"=>$get_tampil_kostum
-        )
-        );
+        $pemesanan = $this->db->query("
+            SELECT tempat_sewa.id_user ,user.nama,sewa.tgl_transaksi,kostum.nama_kostum,detail.jumlah,kostum.harga_kostum,log.status_log FROM sewa JOIN detail ON sewa.id_sewa = detail.id_sewa 
+            JOIN log ON detail.id_detail = log.id_detail
+            JOIN kostum ON kostum.id_kostum = detail.id_kostum
+            JOIN tempat_sewa ON tempat_sewa.id_tempat = kostum.id_tempat
+            JOIN user ON user.id_user = tempat_sewa.id_user
+            JOIN alamat ON sewa.id_alamat = alamat.id_alamat
+            WHERE tempat_sewa.id_user='$id_user' AND status_log='valid';
+          ")->result();
+       $this->response(array('status'=>'success',"result"=>$pemesanan));
+        
+    }
+    function getSewa_post(){
+        $id_user=$this->post('id_user');
+        $sewa= $this->db->query("
+        SELECT tempat_sewa.id_user ,user.nama,sewa.tgl_transaksi,kostum.nama_kostum,detail.jumlah,kostum.harga_kostum,log.status_log FROM sewa JOIN detail ON sewa.id_sewa = detail.id_sewa 
+        JOIN log ON detail.id_detail = log.id_detail
+        JOIN kostum ON kostum.id_kostum = detail.id_kostum
+        JOIN tempat_sewa ON tempat_sewa.id_tempat = kostum.id_tempat
+        JOIN user ON user.id_user = tempat_sewa.id_user
+        JOIN alamat ON sewa.id_alamat = alamat.id_alamat
+        WHERE tempat_sewa.id_user='$id_user' AND status_log='ambil';
+        ")->result();
+        $this->response(array('status'=>'success',"result"=>$sewa));
     }
     function getKategori_get(){
         $getKategori= $this->db->query("

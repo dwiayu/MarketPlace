@@ -73,7 +73,14 @@
         <activity android:name=".DaftarAlamat" />
         <activity android:name=".LayarIdentitas" />
         <activity android:name=".UpdateIdentitas" />
-        <activity android:name=".InsertTempatSewa"></activity>
+        <activity android:name=".InsertTempatSewa" />
+        <activity android:name=".DaftarKostum" />
+        <activity android:name=".InsertKostumActivity" />
+        <activity android:name=".LayarEditKostum" />
+        <activity android:name=".DaftarPemesanan" />
+        <activity android:name=".LayarDetailPemesanan" />
+        <activity android:name=".DaftarSewa" />
+        <activity android:name=".LayarDetailSewa"></activity>
     </application>
 
 </manifest>

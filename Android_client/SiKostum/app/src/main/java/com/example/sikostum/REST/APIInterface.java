@@ -4,7 +4,10 @@ import com.example.sikostum.MODEL.GetAlamat;
 import com.example.sikostum.MODEL.GetDelete;
 import com.example.sikostum.MODEL.GetEditProfil;
 import com.example.sikostum.MODEL.GetIdentitas;
+import com.example.sikostum.MODEL.GetKategori;
+import com.example.sikostum.MODEL.GetKostum;
 import com.example.sikostum.MODEL.GetLogin;
+import com.example.sikostum.MODEL.GetPemesanan;
 import com.example.sikostum.MODEL.GetPendaftaran;
 import com.example.sikostum.MODEL.GetProfilId;
 import com.example.sikostum.MODEL.GetTempat;
@@ -199,4 +202,59 @@ public interface APIInterface {
         @Part("deskripsi_tempat") RequestBody deskrisi_tempat,
         @Part("status") RequestBody status
         );
+//KOSTUM
+
+    @GET("Kostum/getKategori")
+    Call<GetKategori>getKategori();
+    @Multipart
+    @POST("Kostum/insertKostum")
+    Call<GetKostum>postKostum(
+            @Part MultipartBody.Part file,
+
+            @Part("id_kategori")RequestBody id_kategori,
+            @Part("id_tempat") RequestBody id_tempat,
+            @Part("nama_kostum") RequestBody nama_kostum,
+            @Part("jumlah_kostum") RequestBody jumlah_kostum,
+            @Part("harga_kostum") RequestBody harga_kostum,
+            @Part("deskripsi_kostum") RequestBody deskripsi_kostum
+    );
+    @Multipart
+    @POST("Kostum/tampilKostum")
+    Call<GetKostum>tampilKostum(
+            @Part("id_user") RequestBody id_user
+
+    );
+    @Multipart
+    @POST("TempatSewa/statusIdentitas")
+    Call<GetIdentitas>tampilIdentitas(
+            @Part("id_user") RequestBody id_user
+    );
+    @Multipart
+    @POST("Kostum/updateKostum")
+    Call<GetKostum>putKostum(
+            @Part MultipartBody.Part file,
+            @Part ("id_kostum") RequestBody id_kostum,
+            @Part("id_kategori") RequestBody id_kategori,
+            @Part("nama_kostum") RequestBody nama_kostum,
+            @Part("jumlah_kostum") RequestBody jumlah_kostum,
+            @Part("harga_kostum") RequestBody harga_kostum,
+            @Part("deskripsi_kostum") RequestBody deskripsi_kostum
+    );
+    @Multipart
+    @POST("Kostum/hapusKostum")
+    Call<GetKostum> deleteKostum(
+            @Part ("id_kostum") RequestBody id_kostum
+    );
+    //Pemesanan
+    @Multipart
+    @POST("Pemesanan/tampilPemesanan")
+    Call<GetPemesanan>getPemesanan(
+            @Part("id_user") RequestBody id_user
+            );
+    @Multipart
+    @POST("Pemesanan/getSewa")
+    Call<GetPemesanan>getSewa(
+            @Part("id_user") RequestBody id_user
+    );
+
 }

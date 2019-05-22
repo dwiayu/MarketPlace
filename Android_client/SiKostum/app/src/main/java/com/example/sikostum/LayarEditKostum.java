@@ -1,11 +1,9 @@
 package com.example.sikostum;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -27,12 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.sikostum.MODEL.Alamat;
-import com.example.sikostum.MODEL.GetAlamat;
-import com.example.sikostum.MODEL.GetTempat;
+import com.example.sikostum.MODEL.GetKategori;
+import com.example.sikostum.MODEL.GetKostum;
+import com.example.sikostum.MODEL.Kategori;
 import com.example.sikostum.REST.APIClient;
 import com.example.sikostum.REST.APIInterface;
-import com.example.sikostum.Utils.SaveSharedPreferences;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -56,142 +53,160 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static okhttp3.MediaType.parse;
-
-public class InsertTempatSewa extends AppCompatActivity {
-    EditText t_nama, t_noRek, t_slogan, t_deskripsi;
-
-    ImageView fotoTempat;
-    Button btFotoTempat,btSimpan;
-    Spinner spinnerAlamat,spinnerStatus;
+public class LayarEditKostum extends AppCompatActivity {
     Context mContext;
+    ImageView fotoKostum;
+    TextView tvIdKostum;
+    EditText EnamaKostum, EhargaKostum, EjumlahKostum, EdeskripsiKostum;
+    String fileNamePhoto;
+    String imagePath = "";
+    Spinner kategori;
+    Button btUpdateKostum, btKembali, btPilihGambar;
     APIInterface mApiInterface;
-    ProgressDialog loading;
-    String id_user;
-    TextView tvIdAlamatU;
-    String imagePath="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_insert_tempat_sewa);
+        setContentView(R.layout.activity_layar_edit_kostum);
+
         mContext= getApplicationContext();
+       kategori = (Spinner) findViewById(R.id.spinnerKategoriUp);
+        fotoKostum = (ImageView) findViewById(R.id.imageViewKostum);
+        tvIdKostum = (TextView)findViewById(R.id.idKostumUp);
+        EnamaKostum = (EditText) findViewById(R.id.editTextNama);
+        EhargaKostum = (EditText) findViewById(R.id.editTexHargaKostum);
+        EjumlahKostum=(EditText) findViewById(R.id.editJumlahKostum);
+        EdeskripsiKostum = (EditText) findViewById(R.id.editTextDeskripsi);
+        btPilihGambar =(Button) findViewById(R.id.pilihGambarKostum);
+        btUpdateKostum =(Button) findViewById(R.id.buttonUpdateKostum);
+        btKembali =(Button) findViewById(R.id.buttonKembaliKostum);
 
-
-        t_nama= (EditText) findViewById(R.id.t_namaTempat2);
-        t_noRek = (EditText) findViewById(R.id.t_noRek);
-        t_slogan =(EditText) findViewById(R.id.t_slogan);
-        t_deskripsi=(EditText) findViewById(R.id.t_deskripsi);
-        fotoTempat = (ImageView) findViewById(R.id.fotoTempat);
-        spinnerAlamat = (Spinner) findViewById(R.id.spinnerAlamat);
-        spinnerStatus = (Spinner) findViewById(R.id.spinnerStatus);
-        btFotoTempat = (Button) findViewById(R.id.buttonFotoTempat);
-        btSimpan = (Button) findViewById(R.id.buttonSimpanTempat);
-        id_user = SaveSharedPreferences.getId(getApplicationContext());
-
-
-
-
-        initSpinnerAlamat();
-        spinnerAlamat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedName =parent.getItemAtPosition(position).toString();
-                Toast.makeText(mContext,"Kamu memilih alamat"+selectedName,Toast.LENGTH_SHORT);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        btFotoTempat.setOnClickListener(new View.OnClickListener() {
+        final Intent mIntent = getIntent();
+        tvIdKostum.setText(mIntent.getStringExtra("id_kostum"));
+        EnamaKostum.setText(mIntent.getStringExtra("nama_kostum"));
+        EhargaKostum.setText(mIntent.getStringExtra("harga_kostum"));
+        EjumlahKostum.setText(mIntent.getStringExtra("jumlah_kostum"));
+        EdeskripsiKostum.setText(mIntent.getStringExtra("deskripsi_kostum"));
+        fileNamePhoto = mIntent.getStringExtra("foto_kostum");
+        imagePath = mIntent.getStringExtra("foto_kostum_url");
+        if (fileNamePhoto != null){
+            Glide.with(getApplicationContext()).load(APIClient.BASE_URL+"uploads/"+fileNamePhoto).into(fotoKostum);
+        } else {
+            Glide.with(getApplicationContext()).load(R.drawable.ic_person_black_24dp).into(fotoKostum);
+        }
+        imagePath = mIntent.getStringExtra("foto_kostum_url");
+        initSpinnerKategori();
+        btPilihGambar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mintaPermissions();
             }
         });
+        kategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedName = parent.getItemAtPosition(position).toString();
+                Toast.makeText(mContext, "Kamu memilih kategori" + selectedName, Toast.LENGTH_SHORT);
+            }
 
-        btSimpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+
+            }
+        });
+        btKembali.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                APIInterface mApiInterface= APIClient.getClient().create(APIInterface.class);
-                MultipartBody.Part body =null;
-                if(!imagePath.isEmpty()){
-                    // Buat file dari image yang dipilih
+                Intent mIntent = new Intent(getApplicationContext(),DaftarKostum.class);
+                startActivity(mIntent);
+            }
+        });
+        final APIInterface mApiInterface = APIClient.getClient().create(APIInterface.class);
+        btUpdateKostum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MultipartBody.Part body = null;
+                //dicek apakah image sama dengan yang ada di server atau berubah
+                //jika sama dikirim lagi jika berbeda akan dikirim ke server
+                if ((!imagePath.contains("uploads/" + fileNamePhoto)) &&
+                        (imagePath.length()>0)){
+                    //File creating from selected URL
                     File file = new File(imagePath);
 
-                    // Buat RequestBody instance dari file
-                    RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), file);
+                    // create RequestBody instance from file
+                    RequestBody requestFile = RequestBody.create(
+                            MediaType.parse("multipart/form-data"), file);
 
-                    // MultipartBody.Part digunakan untuk mendapatkan nama file
-                    body = MultipartBody.Part.createFormData("foto_tempat", file.getName(),
+                    // MultipartBody.Part is used to send also the actual file name
+                    body = MultipartBody.Part.createFormData("foto_kostum", file.getName(),
                             requestFile);
-
                 }
-                RequestBody reqid_user =MultipartBody.create(parse("multipart/form-data"),
-                        id_user);
-                RequestBody reqid_alamat =MultipartBody.create(MediaType.parse("multipart/form-data"),
-                        (spinnerAlamat.getSelectedItem().toString()));
-                RequestBody reqnama_tempat =MultipartBody.create(MediaType.parse("multipart/form-data"),
-                        (t_nama.getText().toString().isEmpty()) ? "" : t_nama.getText().toString());
-                RequestBody reqno_rekeneing =MultipartBody.create(MediaType.parse("multipart/form-data"),
-                        (t_noRek.getText().toString().isEmpty()) ? "" : t_noRek.getText().toString());
-                RequestBody reqslogan_tempat = MultipartBody.create(MediaType.parse("multipart/form-data"),
-                        (t_slogan.getText().toString().isEmpty()) ? "" : t_slogan.getText().toString());
-                RequestBody reqdeskripsi_tempat = MultipartBody.create(MediaType.parse("multipart/form-data"),
-                        (t_deskripsi.getText().toString().isEmpty()) ? "" : t_deskripsi.getText().toString());
-                RequestBody reqstatus_tempat = MultipartBody.create(MediaType.parse("multipart/form-data"),
-                        (spinnerStatus.getSelectedItem().toString()));
-                Call<GetTempat> alamatCall= mApiInterface.posTempat(body,reqid_user,reqid_alamat,reqnama_tempat,
-                        reqno_rekeneing,reqslogan_tempat,reqdeskripsi_tempat,reqstatus_tempat);
-                alamatCall.enqueue(new Callback<GetTempat>() {
+                RequestBody reqid_kostum = MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        (mIntent.getStringExtra("id_kostum")));
+                RequestBody reqid_kategori =MultipartBody.create(MediaType.parse("multipart/form-data"),
+                        (kategori.getSelectedItem().toString()));
+                RequestBody reqnama_kostum =
+                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                                (EnamaKostum.getText().toString().isEmpty()) ?
+                                        "" : EnamaKostum.getText().toString());
+                RequestBody reqjumlah_kostum =
+                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                                (EjumlahKostum.getText().toString().isEmpty()) ?
+                                        "" : EjumlahKostum.getText().toString());
+                RequestBody reqharga_kostum =
+                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                                (EhargaKostum.getText().toString().isEmpty()) ?
+                                        "" : EhargaKostum.getText().toString());
+                RequestBody reqdeskripsi_kostum =
+                        MultipartBody.create(MediaType.parse("multipart/form-data"),
+                                (EdeskripsiKostum.getText().toString().isEmpty()) ?
+                                        "" : EdeskripsiKostum.getText().toString());
+                Call<GetKostum>mKostum= mApiInterface.putKostum(body,reqid_kostum,reqid_kategori,reqnama_kostum,
+                        reqjumlah_kostum,reqharga_kostum,reqdeskripsi_kostum);
+                mKostum.enqueue(new Callback<GetKostum>() {
                     @Override
-                    public void onResponse(Call<GetTempat> call, Response<GetTempat> response) {
+                    public void onResponse(Call<GetKostum> call, Response<GetKostum> response) {
+                        Log.d("EditReview", response.body().getStatus());
                         if (response.body().getStatus().equals("failed")){
-                            Toast.makeText(InsertTempatSewa.this, "Gagal insert!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LayarEditKostum.this, "Gagal Edit", Toast.LENGTH_SHORT).show();
                         }else{
-
-                            Toast.makeText(InsertTempatSewa.this, "Sukses insert tempat!", Toast.LENGTH_SHORT).show();
-                            Intent mIntent = new Intent(getApplicationContext(), beranda.class);
-                            startActivity(mIntent);
+                            Toast.makeText(LayarEditKostum.this, "Berhasil Update", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<GetTempat> call, Throwable t) {
-                        Log.d("Insert Tempat", t.getMessage());
+                    public void onFailure(Call<GetKostum> call, Throwable t) {
+
                     }
                 });
+
+
             }
         });
+
     }
-
-    private void initSpinnerAlamat(){
-
+    public void  initSpinnerKategori(){
         mApiInterface = APIClient.getClient().create(APIInterface.class);
-        RequestBody reqid_user= MultipartBody.create(MediaType.parse("multipart/form-data"),
-                (id_user));
-//        RequestBody reqid_alamat = MultipartBody.create(MediaType.parse("multipart/form-data"),
-//                (tvIdAlamatU.getText().toString().isEmpty()) ? "" : tvIdAlamatU.getText().toString());
-               Call<GetAlamat>mAlamat=mApiInterface.getAlm(reqid_user);
-        mAlamat.enqueue(new Callback<GetAlamat>() {
+        Call<GetKategori> mKategori=mApiInterface.getKategori();
+        mKategori.enqueue(new Callback<GetKategori>() {
             @Override
-            public void onResponse(Call<GetAlamat> call, Response<GetAlamat> response) {
+            public void onResponse(Call<GetKategori> call, Response<GetKategori> response) {
                 if(response.body().getStatus().equals("success")){
-                    List<Alamat> alamatItem = response.body().getResult();
+                    List<Kategori> kategoriItem = response.body().getResult();
                     List<String> listSpinner= new ArrayList<String>();
-                    for(int i=0; i<alamatItem.size();i++){
+                    for(int i=0; i<kategoriItem.size();i++){
 //                        listSpinner.add(alamatItem.get(i).getId_alamat());
-                        String namaAlamat = alamatItem.get(i).getAlamat();
-                        listSpinner.add(alamatItem.get(i).getIdAlamat()+"-"+namaAlamat);
+                        String namaKategori = kategoriItem.get(i).getNama_kategori();
+                        listSpinner.add(kategoriItem.get(i).getId_kategori()+"-"+namaKategori);
 
 
                     }
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
                             android.R.layout.simple_spinner_item,listSpinner);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerAlamat.setAdapter(adapter);
+                    kategori.setAdapter(adapter);
                 }else{
 
                     Toast.makeText(mContext,"Gagal mengambil data alamat", Toast.LENGTH_SHORT).show();
@@ -199,7 +214,7 @@ public class InsertTempatSewa extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<GetAlamat> call, Throwable t) {
+            public void onFailure(Call<GetKategori> call, Throwable t) {
                 Toast.makeText(mContext,"Koneksi Internet bermasalah",Toast.LENGTH_SHORT).show();
             }
         });
@@ -282,7 +297,7 @@ public class InsertTempatSewa extends AppCompatActivity {
     }
 
     private void tampilkanSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(InsertTempatSewa.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LayarEditKostum.this);
         builder.setTitle("Butuh Permission");
         builder.setMessage("Aplikasi ini membutuhkan permission khusus, mohon ijin.");
         builder.setPositiveButton("BUKA SETTINGS", new DialogInterface.OnClickListener() {
@@ -325,7 +340,7 @@ public class InsertTempatSewa extends AppCompatActivity {
                     imagePath = simpanImage(bitmap);
                     Toast.makeText(mContext, "Foto berhasil di-load!", Toast.LENGTH_SHORT).show();
 
-                    Glide.with(mContext).load(new File(imagePath)).into(fotoTempat);
+                    Glide.with(mContext).load(new File(imagePath)).into(fotoKostum);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -340,7 +355,7 @@ public class InsertTempatSewa extends AppCompatActivity {
             Toast.makeText(mContext, "Foto berhasil di-load dari Camera!", Toast.LENGTH_SHORT)
                     .show();
 
-            Glide.with(mContext).load(new File(imagePath)).into(fotoTempat);
+            Glide.with(mContext).load(new File(imagePath)).into(fotoKostum);
         }
 
     }
@@ -352,7 +367,7 @@ public class InsertTempatSewa extends AppCompatActivity {
 
         // Buat object direktori file
         File lokasiImage = new File(
-                Environment.getExternalStorageDirectory() + "/praktikum");
+                Environment.getExternalStorageDirectory() + "/kostum");
 
         // Buat direktori untuk penyimpanan
         if (!lokasiImage.exists()) {
@@ -373,16 +388,15 @@ public class InsertTempatSewa extends AppCompatActivity {
                     new String[]{"image/jpeg"}, null);
             fo.close();
 
-            Log.d("PRAKTIKUM", "File tersimpan di --->" + f.getAbsolutePath());
+            Log.d("KOSTUM", "File tersimpan di --->" + f.getAbsolutePath());
 
             // Return file
             return f.getAbsolutePath();
 
         } catch (IOException e1) {
-            Log.d("PRAKTIKUM", "error");
+            Log.d("KOSTUM", "error");
             e1.printStackTrace();
         }
         return "";
     }
-
 }

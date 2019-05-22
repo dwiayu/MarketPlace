@@ -74,15 +74,15 @@ public class ProfilFragment extends Fragment {
         View rootView2 = inflater.inflate(R.layout.activity_edit_profil, container, false);
 
         nama = rootView.findViewById(R.id.tx_nama);
-        foto = rootView.findViewById(R.id.foto_user);
+        foto = rootView.findViewById(R.id.profile_image);
         edit = rootView.findViewById(R.id.btn_edit);
         keluar = rootView.findViewById(R.id.btn_logout);
         no_hp = rootView.findViewById(R.id.no_hp);
         email =rootView.findViewById(R.id.email);
         username = rootView.findViewById(R.id.username);
         password = rootView.findViewById(R.id.password);
-       identitas = rootView.findViewById(R.id.bt_identitas);
-       alamat = rootView.findViewById(R.id.bt_alamat);
+       identitas = rootView.findViewById(R.id.btn_identitas);
+       alamat = rootView.findViewById(R.id.btn_alamat);
 
 //        nama2 = rootView2.findViewById(R.id.nama);
         email = rootView2.findViewById(R.id.email);
@@ -170,8 +170,7 @@ public class ProfilFragment extends Fragment {
 
             @Override
             public void onFailure(Call<GetProfilId> call, Throwable t) {
-                Log.d("MyProfile", t.getMessage());
-                Toast.makeText(getActivity(),"Gagal",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Koneksi Internet bermasalah",Toast.LENGTH_SHORT).show();
             }
         });
 

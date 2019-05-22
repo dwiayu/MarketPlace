@@ -1,7 +1,9 @@
 package com.example.sikostum;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.sikostum.MODEL.GetIdentitas;
 import com.example.sikostum.MODEL.GetTempat;
 import com.example.sikostum.MODEL.Tempat;
 import com.example.sikostum.REST.APIClient;
@@ -54,7 +57,9 @@ public class TempatSewaActivity extends AppCompatActivity {
         tvStatus = (TextView) findViewById(R.id.tvStatusTem);
         tvNorek=(TextView) findViewById(R.id.tvNoRek);
         tvIzin = (TextView) findViewById(R.id.tvIzinTem);
-        getData();
+
+        getIdentitas();
+
         // function tombol
         editTempat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +92,44 @@ public class TempatSewaActivity extends AppCompatActivity {
         ActionBar menu = getSupportActionBar();
         menu.setDisplayHomeAsUpEnabled(true);
         menu.setDisplayShowHomeEnabled(true);
+    }
+    public void getIdentitas(){
+        mAPIInterface = APIClient.getClient().create(APIInterface.class);
+        RequestBody req_id_user= MultipartBody.create(MediaType.parse("multipart/form-data"),
+                (id_user));
+        retrofit2.Call<GetIdentitas> mIdentitasCall = mAPIInterface.tampilIdentitas(req_id_user);
+        mIdentitasCall.enqueue(new retrofit2.Callback<GetIdentitas>() {
+            @Override
+            public void onResponse(retrofit2.Call<GetIdentitas> call, retrofit2.Response<GetIdentitas> response) {
+                    if(response.body().getStatus().equals("success")){
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TempatSewaActivity.this);
+                        //set title dialog
+                        alertDialogBuilder.setTitle("Cek Identitas Anda Terlebih dahulu");
+                        //set pesan dari dialog
+                        alertDialogBuilder
+                                .setCancelable(false)
+                                .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                                 @Override
+                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                     TempatSewaActivity.this.finish();
+                                 }
+                             });
+
+                        //membuat alert dialog dari builder
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        //menampilkan alert dialog
+                        alertDialog.show();
+                    }else{
+                        getData();
+                    }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<GetIdentitas> call, Throwable t) {
+
+
+            }
+        });
     }
     public void getData(){
         mAPIInterface = APIClient.getClient().create(APIInterface.class);

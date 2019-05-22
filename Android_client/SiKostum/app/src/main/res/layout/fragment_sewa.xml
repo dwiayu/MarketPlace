@@ -6,36 +6,89 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SewaFragment">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
-            style="@style/TabLayoutStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            android:background="?attr/colorPrimary"/>
-    </android.support.design.widget.AppBarLayout>
-
-
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:orientation="vertical">
+
+        <ImageView
+            android:background="#03A9F4"
+            android:layout_width="match_parent"
+            android:layout_height="340dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/title"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:layout_height="0dp">
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/pemesanan_menu"
+                        android:paddingTop="20dp"
+                        android:layout_margin="2dp"
+                        android:paddingBottom="20dp"
+                        android:drawableTop="@drawable/pemesanan_icon"
+                        android:text="Pemesanan"
+                        android:background="#ffffff"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp" />
+
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/sewa_menu"
+                        android:padding="20dp"
+                        android:layout_margin="2dp"
+                        android:drawableTop="@drawable/sewa_icon"
+                        android:text="Sewa"
+                        android:background="#ffffff"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp" />
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 
