@@ -3,6 +3,10 @@ package com.example.sikostum.MODEL;
 import com.google.gson.annotations.SerializedName;
 
 public class Pemesanan {
+    @SerializedName("id_log")
+    private String id_log;
+    @SerializedName("id_detail")
+    private  String id_detail;
     @SerializedName("id_tempat")
     private String id_tempat;
     @SerializedName("nama")
@@ -19,6 +23,8 @@ public class Pemesanan {
     private String harga_kostum;
     @SerializedName("status_log")
     private String status_log;
+    @SerializedName("jumlah_denda")
+    private String jumlah_denda;
 
     public String getId_tempat() {
         return id_tempat;
@@ -84,15 +90,42 @@ public class Pemesanan {
         this.status_log = status_log;
     }
 
-    public Pemesanan(String id_tempat, String nama_user, String tgl_transaksi, String nama_kostum, String jumlah,
+    public String getId_log() {
+        return id_log;
+    }
+
+    public void setId_log(String id_log) {
+        this.id_log = id_log;
+    }
+
+    public String getId_detail() {
+        return id_detail;
+    }
+
+    public void setId_detail(String id_detail) {
+        this.id_detail = id_detail;
+    }
+
+    public String getJumlah_denda() {
+        return jumlah_denda;
+    }
+
+    public void setJumlah_denda(String jumlah_denda) {
+        this.jumlah_denda = jumlah_denda;
+    }
+
+    public Pemesanan(String id_detail, String jumlah_denda, String id_log, String id_tempat, String nama_user, String tgl_transaksi, String nama_kostum, String jumlah,
                      String status_log, String alamat){
         this.id_tempat = id_tempat;
+        this.jumlah_denda=jumlah_denda;
+        this.id_log=id_log;
         this.nama_user = nama_user;
         this.tgl_transaksi = tgl_transaksi;
         this.nama_kostum = nama_kostum;
         this.jumlah = jumlah;
         this.status_log = status_log;
         this.alamat = alamat;
+        this.id_detail= id_detail;
 
     }
 }

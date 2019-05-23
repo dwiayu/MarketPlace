@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.sikostum.Adapter.AlamatAdapter;
 import com.example.sikostum.MODEL.Alamat;
@@ -66,7 +67,7 @@ public class DaftarAlamat extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<GetAlamat> call, Throwable t) {
-                        Log.d("Get Alamat", t.getMessage());
+                         Toast.makeText(getApplicationContext(),"Koneksi Internet bermasalah", android.widget.Toast.LENGTH_SHORT).show();
                     }
                 });
             }

@@ -42,7 +42,8 @@ public class SewaFragment extends Fragment {
         sewa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //isi intent;
+                Intent mIntent= new Intent(getContext(),DaftarSewa.class);
+                startActivity(mIntent);
             }
         });
         return rootView;

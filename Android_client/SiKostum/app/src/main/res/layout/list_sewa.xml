@@ -6,6 +6,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
+
+        <TextView
+            android:id="@+id/idLog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tvNamaKostum"
+            android:visibility="invisible"
+            android:hint="Id Log" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,6 +83,14 @@
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:hint="Status" />
+
+        <Button
+            android:id="@+id/btSelesai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Selesai" />
     </RelativeLayout>
     <View
         android:layout_width="match_parent"

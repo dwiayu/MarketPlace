@@ -31,6 +31,7 @@ public class LayarDetailSewa extends AppCompatActivity {
         tvNamaKostum.setText(mIntent.getStringExtra("nama_kostum"));
         tvNamaUser.setText(mIntent.getStringExtra("nama_user"));
         tvAlamat.setText(mIntent.getStringExtra("alamat"));
+        tvJumlahKostum.setText(mIntent.getStringExtra("jumlah"));
         tvHargaKostum.setText(mIntent.getStringExtra("harga_kostum"));
         tvStatus.setText(mIntent.getStringExtra("status_log"));
         tvTanggal.setText(mIntent.getStringExtra("tgl_transaksi"));

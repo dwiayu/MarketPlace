@@ -80,7 +80,11 @@
         <activity android:name=".DaftarPemesanan" />
         <activity android:name=".LayarDetailPemesanan" />
         <activity android:name=".DaftarSewa" />
-        <activity android:name=".LayarDetailSewa"></activity>
+        <activity android:name=".LayarDetailSewa" />
+        <activity android:name=".DaftarRiwayat" />
+        <activity android:name=".LayarInsertData" />
+        <activity android:name=".LayarInsertDenda" />
+        <activity android:name=".DaftarKomentar"></activity>
     </application>
 
 </manifest>

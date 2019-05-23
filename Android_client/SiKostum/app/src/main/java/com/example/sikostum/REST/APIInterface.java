@@ -2,9 +2,11 @@ package com.example.sikostum.REST;
 
 import com.example.sikostum.MODEL.GetAlamat;
 import com.example.sikostum.MODEL.GetDelete;
+import com.example.sikostum.MODEL.GetDenda;
 import com.example.sikostum.MODEL.GetEditProfil;
 import com.example.sikostum.MODEL.GetIdentitas;
 import com.example.sikostum.MODEL.GetKategori;
+import com.example.sikostum.MODEL.GetKomentar;
 import com.example.sikostum.MODEL.GetKostum;
 import com.example.sikostum.MODEL.GetLogin;
 import com.example.sikostum.MODEL.GetPemesanan;
@@ -254,6 +256,33 @@ public interface APIInterface {
     @Multipart
     @POST("Pemesanan/getSewa")
     Call<GetPemesanan>getSewa(
+            @Part("id_user") RequestBody id_user
+    );
+    @Multipart
+    @POST("Pemesanan/updateSewaSelesai")
+    Call<GetPemesanan>updateSewaSelesai(
+            @Part("id_log") RequestBody id_log
+    );
+    @Multipart
+    @POST("Pemesanan/getRiwayat")
+    Call<GetPemesanan>getRiwayat(
+            @Part("id_user") RequestBody id_user
+    );
+    @Multipart
+    @POST("Pemesanan/inputDenda")
+    Call<GetDenda>postDenda(
+            @Part("id_detail") RequestBody id_detail,
+            @Part("jumlah_denda") RequestBody jumlah_denda,
+            @Part("keterangan") RequestBody keterangan
+    );
+    @Multipart
+    @POST("Pemesanan/tampilDetail")
+    Call<GetPemesanan>getDetail(
+            @Part("id_detail") RequestBody id_detail
+    );
+    @Multipart
+    @POST("Pemesanan/getKomentar")
+    Call<GetKomentar>getKomentar(
             @Part("id_user") RequestBody id_user
     );
 

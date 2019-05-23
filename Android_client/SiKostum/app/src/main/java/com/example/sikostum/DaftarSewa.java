@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.sikostum.Adapter.PemesananAdapter;
 import com.example.sikostum.Adapter.SewaAdapter;
@@ -58,7 +59,7 @@ public class DaftarSewa extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetPemesanan> call, Throwable t) {
-                Log.d("Get Kostum", t.getMessage());
+                Toast.makeText(getApplicationContext(),"Koneksi Internet bermasalah",Toast.LENGTH_SHORT).show();
             }
         });
 

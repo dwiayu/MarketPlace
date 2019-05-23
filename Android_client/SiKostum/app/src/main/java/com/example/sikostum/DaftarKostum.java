@@ -85,7 +85,7 @@ public class DaftarKostum extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetKostum> call, Throwable t) {
-                Log.d("Get Kostum", t.getMessage());
+                Toast.makeText(getApplicationContext(),"Koneksi Internet bermasalah",Toast.LENGTH_SHORT).show();
             }
         });
     }

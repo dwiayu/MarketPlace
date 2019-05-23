@@ -8,11 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.sikostum.Adapter.KostumAdapter;
 import com.example.sikostum.Adapter.PemesananAdapter;
-import com.example.sikostum.MODEL.GetKostum;
+import com.example.sikostum.Adapter.RiwayatAdapter;
+import com.example.sikostum.Adapter.SewaAdapter;
 import com.example.sikostum.MODEL.GetPemesanan;
-import com.example.sikostum.MODEL.Kostum;
 import com.example.sikostum.MODEL.Pemesanan;
 import com.example.sikostum.REST.APIClient;
 import com.example.sikostum.REST.APIInterface;
@@ -27,36 +26,35 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DaftarPemesanan extends AppCompatActivity {
+public class DaftarRiwayat extends AppCompatActivity {
     String id_user;
     APIInterface mApiInterface;
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     Context mContext;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_daftar_pemesanan);
+        setContentView(R.layout.activity_daftar_riwayat);
         mContext = getApplicationContext();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
         id_user = SaveSharedPreferences.getId(getApplicationContext());
-        tampilPemesanan();
+        tampilRiwayat();
     }
-    private void tampilPemesanan(){
+    private void tampilRiwayat(){
         mApiInterface = APIClient.getClient().create(APIInterface.class);
         RequestBody reqid_user = MultipartBody.create(MediaType.parse("multipart/form-data"),
                 SaveSharedPreferences.getId(getApplicationContext()));
-        Call<GetPemesanan> mPemesananCall = mApiInterface.getPemesanan(reqid_user);
-        mPemesananCall.enqueue(new Callback<GetPemesanan>() {
+        Call<GetPemesanan> mRiwayatCall = mApiInterface.getRiwayat(reqid_user);
+        mRiwayatCall.enqueue(new Callback<GetPemesanan>() {
             @Override
             public void onResponse(Call<GetPemesanan> call, Response<GetPemesanan> response) {
                 Log.d("Get Pemesanan", response.body().getStatus());
-                List<Pemesanan> daftarPemesanan = response.body().getResult();
-                mAdapter = new PemesananAdapter(daftarPemesanan);
+                List<Pemesanan> daftarRiwayat= response.body().getResult();
+                mAdapter = new RiwayatAdapter(daftarRiwayat);
                 mRecyclerView.setAdapter(mAdapter);
             }
 

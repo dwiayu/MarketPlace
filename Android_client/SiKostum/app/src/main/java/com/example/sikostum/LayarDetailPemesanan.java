@@ -29,6 +29,7 @@ public class LayarDetailPemesanan extends AppCompatActivity {
         final Intent mIntent = getIntent();
         tvNamaKostum.setText(mIntent.getStringExtra("nama_kostum"));
         tvNamaUser.setText(mIntent.getStringExtra("nama_user"));
+        tvJumlahKostum.setText(mIntent.getStringExtra("jumlah"));
         tvAlamat.setText(mIntent.getStringExtra("alamat"));
         tvHargaKostum.setText(mIntent.getStringExtra("harga_kostum"));
         tvStatus.setText(mIntent.getStringExtra("status_log"));

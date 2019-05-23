@@ -25,12 +25,19 @@ class TempatSewa extends REST_Controller {
         $id_user=$this->post('id_user');
         $getStatusID =$this->db->query("
         SELECT * from identitas join user ON user.id_user = identitas.id_user WHERE status!='valid' AND user.id_user=$id_user")->result();
+      
 
-        if(!empty($getStatusID)){
+        if(!empty($getStatusID) ){
             $this->response(array(
                 "status" =>"success",
                 "result" =>$getStatusID
             ));
+        }else if(empty($getStatusID)){
+            $this->response(array(
+                "status" =>"success",
+                "result" =>$getStatusID
+            ));
+            
         }else{
             $this->response(array(
                 "status" =>"valid",
