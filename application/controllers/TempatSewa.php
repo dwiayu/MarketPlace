@@ -88,7 +88,7 @@ class TempatSewa extends REST_Controller {
             }
     }
     function insertTempat_post(){
-        $izin='tunggu';
+        $izin='ya';
         $data_tempatSewa = array(
            
             "id_user" =>$this->post("id_user"),
@@ -135,7 +135,7 @@ class TempatSewa extends REST_Controller {
             
           }
           function updateTempat_post(){
-            $izin = 'tunggu';
+            
             $data_tempat= array(
                 'id_tempat' => $this->post('id_tempat'),
                 'id_alamat' =>$this->post('id_alamat'),
@@ -144,8 +144,7 @@ class TempatSewa extends REST_Controller {
                 'slogan_tempat'=>$this->post('slogan_tempat'),
                 'deskripsi_tempat' =>$this->post('deskripsi_tempat'),
                 'foto_tempat' => $this->post('foto_tempat'),
-                'status_tempat' =>$this->post('status'),
-                'izin' =>($izin)
+                'status_tempat' =>$this->post('status')
             );
             // Cek apakah ada di database
             $get_user_baseID = $this->db->query("
@@ -193,8 +192,7 @@ class TempatSewa extends REST_Controller {
                     slogan_tempat= '{$data_tempat['slogan_tempat']}',
                     deskripsi_tempat= '{$data_tempat['deskripsi_tempat']}',
                     foto_tempat = '{$data_tempat['foto_tempat']}',
-                    status_tempat = '{$data_tempat['status_tempat']}',
-                    izin= '{$data_tempat['izin']}'
+                    status_tempat = '{$data_tempat['status_tempat']}'
                     WHERE id_tempat = '{$data_tempat['id_tempat']}'");
 
             } else {
@@ -207,8 +205,7 @@ class TempatSewa extends REST_Controller {
                     no_rekening= '{$data_tempat['no_rekening']}',
                     slogan_tempat= '{$data_tempat['slogan_tempat']}',
                     deskripsi_tempat= '{$data_tempat['deskripsi_tempat']}',
-                    status_tempat = '{$data_tempat['status_tempat']}',
-                    izin= '{$data_tempat['izin']}'
+                    status_tempat = '{$data_tempat['status_tempat']}'
                     WHERE id_tempat = {$data_tempat['id_tempat']}"
                 );
             }

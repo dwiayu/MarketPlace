@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.penyewa">
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon_user"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".InputAlamatActivity"
+            android:label="Tambah Alamat"
+            android:parentActivityName=".AlamatActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AlamatActivity" />
+        </activity>
+        <activity
+            android:name=".EditAlamatActivity"
+            android:label="Edit Alamat"
+            android:parentActivityName=".AlamatActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AlamatActivity" />
+        </activity>
+        <activity android:name=".ListAlamatActivity" />
+        <activity
+            android:name=".UpdateIdentitasActivity"
+            android:label="Edit Identitas"
+            android:parentActivityName=".LayarIdentitasActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LayarIdentitasActivity" />
+        </activity>
+        <activity
+            android:name=".LayarIdentitasActivity"
+            android:label="Identitas"
+            android:parentActivityName=".BerandaActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BerandaActivity" />
+        </activity>
+        <activity
+            android:name=".AlamatActivity"
+            android:label="Alamat"
+            android:parentActivityName=".BerandaActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BerandaActivity" />
+        </activity>
+        <activity
+            android:name=".IdentitasActivity"
+            android:label="Tambah Identitas"
+            android:parentActivityName=".LayarIdentitasActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LayarIdentitasActivity" />
+        </activity>
+        <activity
+            android:name=".EditProfilActivity"
+            android:label="Edit Profil"
+            android:parentActivityName=".BerandaActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BerandaActivity" />
+        </activity>
+        <activity
+            android:name=".RiwayatActivity"
+            android:label="Riwayat" />
+        <activity
+            android:name=".SewaActivity"
+            android:label="Sewa" />
+        <activity
+            android:name=".VerifikasiActivity"
+            android:label="Verifikasi" />
+        <activity
+            android:name=".PemesananActivity"
+            android:label="Pemesanan" />
+        <activity
+            android:name=".KeranjangActivity"
+            android:label="Keranjang" />
+        <activity
+            android:name=".DetailKostumActivity"
+            android:label="Detail Kostum" />
+        <activity
+            android:name=".KostumActivity"
+            android:label="Kostum" android:theme="@style/noTitleBar" />
+        <activity
+            android:name=".DetailTempatActivity"
+            android:label="Tempat Sewa" />
+        <activity android:name=".TempatSewaActivity" />
+        <activity
+            android:name=".DaftarActivity"
+            android:theme="@style/noTitleBar" />
+        <activity
+            android:name=".BerandaActivity"
+            android:label="@string/title_activity_beranda"
+            android:theme="@style/noTitleBar" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/noTitleBar" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/noTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".DetailPesan" />
+        <activity android:name=".DetailVerifikasi" />
+        <activity android:name=".DetailSewa"></activity>
+    </application>
+
+</manifest>
