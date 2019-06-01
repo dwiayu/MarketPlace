@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.penyewa.DataHelper.DBAdapter;
 import com.example.penyewa.MODEL.GetProfilId;
 import com.example.penyewa.REST.APIClient;
 import com.example.penyewa.REST.APIInterface;
@@ -39,6 +40,7 @@ public class ProfilFragment extends Fragment {
     ImageView foto, foto_user2;
     String url_photo, photoName;
     APIInterface mAPIInterface;
+
 
     public ProfilFragment(){
 
@@ -121,8 +123,12 @@ public class ProfilFragment extends Fragment {
 
     }
     public void logout(){
+        final DBAdapter db=new DBAdapter(getContext());
+        db.openDB();
+        db.deleteAllCart();
         SaveSharedPreferences.setLoggedInPY(getContext(), false);
         SaveSharedPreferences.setId(getContext(),"");
+
     }
     public void getData(){
         mAPIInterface = APIClient.getClient().create(APIInterface.class);

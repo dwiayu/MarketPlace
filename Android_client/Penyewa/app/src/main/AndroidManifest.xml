@@ -95,7 +95,8 @@
             android:label="Detail Kostum" />
         <activity
             android:name=".KostumActivity"
-            android:label="Kostum" android:theme="@style/noTitleBar" />
+            android:label="Kostum"
+            android:theme="@style/noTitleBar" />
         <activity
             android:name=".DetailTempatActivity"
             android:label="Tempat Sewa" />
@@ -121,7 +122,10 @@
         </activity>
         <activity android:name=".DetailPesan" />
         <activity android:name=".DetailVerifikasi" />
-        <activity android:name=".DetailSewa"></activity>
+        <activity android:name=".DetailSewa" />
+        <activity android:name=".OnGoingSewa" />
+        <activity android:name=".PesanKostum" />
+        <activity android:name=".ViewKeranjang"></activity>
     </application>
 
 </manifest>

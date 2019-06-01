@@ -241,7 +241,7 @@ function updateKostum_post(){
             //jika upload foto berhasil 
             $update = $this->db->query("
             UPDATE kostum set
-            id_kategori= '{$data_kostum['id_kostum']}',
+            id_kategori= '{$data_kostum['id_kategori']}',
             nama_kostum= '{$data_kostum['nama_kostum']}',
             jumlah_kostum= '{$data_kostum['jumlah_kostum']}',
             harga_kostum= '{$data_kostum['harga_kostum']}',
@@ -253,7 +253,7 @@ function updateKostum_post(){
             //jika foto kosong / tidak berhasil di upload
             $update = $this->db->query("
             UPDATE kostum set
-            id_kategori= '{$data_kostum['id_kostum']}',
+            id_kategori= '{$data_kostum['id_kategori']}',
             nama_kostum= '{$data_kostum['nama_kostum']}',
             jumlah_kostum= '{$data_kostum['jumlah_kostum']}',
             harga_kostum= '{$data_kostum['harga_kostum']}',

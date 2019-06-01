@@ -35,6 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class KostumActivity extends AppCompatActivity {
+
     String id_user;
     APIInterface mApiInterface;
     RecyclerView mRecyclerView;
@@ -74,6 +75,7 @@ public class KostumActivity extends AppCompatActivity {
                 Log.d("Get Pemesanan", response.body().getStatus());
                 listKostum= response.body().getResult();
                 myAdapter = new KostumAllAdapter(listKostum);
+                SaveSharedPreferences.setKeranjang(getApplicationContext(),listKostum);
                 mRecyclerView.setAdapter(myAdapter);
             }
 

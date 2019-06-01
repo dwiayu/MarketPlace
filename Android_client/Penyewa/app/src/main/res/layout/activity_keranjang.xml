@@ -5,5 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".KeranjangActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/totalKeranjang"
+        android:hint="total harga keranjang = Rp. "/>
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rvCart"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rvCart"></ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btPesanKostum"
+        android:text="Pesan"/>
 
 </android.support.constraint.ConstraintLayout>

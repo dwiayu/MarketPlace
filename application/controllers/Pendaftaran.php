@@ -52,22 +52,28 @@ class Pendaftaran extends REST_Controller {
 						)
 					);
 				} 
-				else {
-		
-					$data_pendaftaran['foto_user'] = $this->uploadPhoto();
-		
-					$do_insert = $this->db->insert('user', $data_pendaftaran);
-				   
-					if ($do_insert){
-						$this->response(
-							array(
-								"status" => "success",
-								"result" => array($data_pendaftaran),
-								"message" => $do_insert
-							)
-						);
-					}
-				}
+			else{
+				$getUsername =$this->db->query("SELECT username from user where username='".$data_pendaftaran['username']."'")->result();
+				$message="";
+				if(!empty($getUsername)) $message.="username sudah tersedia";
+				if(empty($message)){
+					
+								$data_pendaftaran['foto_user'] = $this->uploadPhoto();
+					
+								$do_insert = $this->db->insert('user', $data_pendaftaran);
+							   
+								if ($do_insert){
+									$this->response(
+										array(
+											"status" => "success",
+											"result" => array($data_pendaftaran),
+											"message" => $do_insert
+										)
+									);
+								}
+							}
+			}
+			
 	}
 	function uploadPhoto() {
 		

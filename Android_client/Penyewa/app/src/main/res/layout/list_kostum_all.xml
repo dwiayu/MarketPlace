@@ -14,17 +14,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvIdKostum"
-                android:visibility="invisible"/>
+                android:visibility="gone"
+               />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvIdTempat"
-                android:visibility="invisible"/>
+                android:hint="id tempat..."
+                android:visibility="gone"
+
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvIdAlamat"
-                android:visibility="invisible"/>
+                android:visibility="gone"
+                android:hint="id alamat..."/>
         </LinearLayout>
 
         <LinearLayout
@@ -75,7 +80,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/jumlahKostum"
                 android:hint="jumlah kostum"/>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/deskripsiKostum"/>
 
 
             <TextView
