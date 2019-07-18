@@ -89,9 +89,10 @@ function myProfil_post(){
     }
     function myedit_post(){
        
-        $data_user= array(
+       $data_user= array(
             'id_user' =>$this->post('id_user'),
             'nama' => $this->post('nama'),
+            'jenis_kelamin' => $this->post('jenis_kelamin'),
             'email' => $this->post('email'),
             'no_hp' => $this->post('no_hp'),
             'foto_user' => $this->post('foto_user'),
@@ -139,6 +140,7 @@ function myProfil_post(){
             $update = $this->db->query("
                 UPDATE user SET
                 nama = '{$data_user['nama']}',
+                jenis_kelamin = '{$data_user['jenis_kelamin']}',
                 email = '{$data_user['email']}',
                 no_hp = '{$data_user['no_hp']}',
                 foto_user = '{$data_user['foto_user']}',
@@ -152,6 +154,7 @@ function myProfil_post(){
                 UPDATE user
                 SET
                 nama = '{$data_user['nama']}',
+                jenis_kelamin = '{$data_user['jenis_kelamin']}',
                 email = '{$data_user['email']}',
                 no_hp = '{$data_user['no_hp']}',
                 username = '{$data_user['username']}',

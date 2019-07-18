@@ -16,7 +16,8 @@ class Kostum extends REST_Controller{
 			$kostum = $this->db->get('kostum')->result();
 		}
 		$this->response($kostum,200);
-	} 
+	}
+
 	public function allKostum_get(){
 		$get_all_kostum = $this->db->query("
 		SELECT * FROM kostum join tempat_sewa on tempat_sewa.id_tempat=kostum.id_tempat
@@ -26,5 +27,16 @@ class Kostum extends REST_Controller{
 			"result"=>$get_all_kostum
 		)
 		);
+	} 
+
+	public function kostumBelanja_post(){
+		$id_tempat= $this->post('id_tempat');
+		$get_kostum_belanja = $this->db->query("SELECT * FROM tempat_sewa WHERE status_tempat='tutup'
+			AND id_tempat='$id_tempat'")->result();
+		if ($get_kostum_belanja) {
+			$this->response(array("status" =>"success","result" => $get_kostum_belanja));
+		}
+		
+		
 	}
 }

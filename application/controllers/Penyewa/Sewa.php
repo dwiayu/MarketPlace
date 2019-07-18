@@ -15,6 +15,8 @@ class Sewa extends REST_Controller{
 		}
 		$this->response($sewa,200);
 	} 
+
+
 	public function updateSewa_post(){
 		$data_sewa=array(
 			'id_sewa' => $this->post('id_sewa'),
@@ -106,5 +108,6 @@ function uploadPhoto() {
 	
 		return $post_image;
 	}
+
 
 }

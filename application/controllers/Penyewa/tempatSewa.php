@@ -17,6 +17,20 @@ class tempatSewa extends REST_Controller{
 		$this->response($tempat,200);
 	} 
 
+	public function detailTempat_post(){
+		$id_kostum = $this->post('id_kostum');
+		$detail_kostum = $this->db->query("SELECT * FROM tempat_sewa join kostum on kostum.id_tempat=tempat_sewa.id_tempat
+		join alamat on tempat_sewa.id_alamat= alamat.id_alamat
+		join user on user.id_user = tempat_sewa.id_user
+		 where id_kostum=$id_kostum")->result();
+		   $this->response(
+            array(
+                "status" => "success",
+                "result" => $detail_kostum
+            )
+        );
+	} 
+
 
 
 }

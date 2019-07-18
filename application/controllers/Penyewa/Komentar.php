@@ -16,26 +16,33 @@ class Komentar extends REST_Controller{
 			$komentar= $this->db->get('komentar')->result();
 		}
 		$this->response($komentar,200);
+	}
+	public function tampilKomentar_post(){
+		$id_detail= $this->post('id_detail');
+		$komentar= $this->db->query("SELECT * FROM komentar where id_detail=$id_detail")->result();
+		if(!empty($komentar)){
+			$this->response(array('status'=>'success',"result"=>$komentar));
+		}
+		else{
+			$this->response(array('status'=>'kosong',"result"=>$komentar));
+			
+		}
 	} 
 
-	// public function komentarYa_get(){
-	// 	$id_tempat = $this->get('id_tempat');
-	// 	$komentar = $this->db->query("SELECT count(id_komentar) as jml_ya FROM komentar JOIN sewa ON sewa.id_sewa=komentar.id_sewa JOIN tempat_sewa ON sewa.id_tempat=tempat_sewa.id_tempat WHERE suka='ya' AND sewa.id_tempat='$id_tempat'")->result();
-	// 	$this->response($komentar,200);
-	
-	// }
-
-	// public function komentarTidak_get(){
-	// 	$id_tempat = $this->get('id_tempat');
-	// 	$komentar = $this->db->query("SELECT count(id_komentar) as jml_tidak FROM komentar JOIN sewa ON sewa.id_sewa=komentar.id_sewa JOIN tempat_sewa ON sewa.id_tempat=tempat_sewa.id_tempat WHERE suka='tidak' AND sewa.id_tempat='$id_tempat'")->result();
-	// 	$this->response($komentar,200);
-	
-	// }
+	//tampil komentar berdasarkan kostum
+	public function tampilReview_post(){
+		$id_kostum = $this->post('id_kostum');
+		$review= $this->db->query ("
+		SELECT * from komentar join detail on detail.id_detail = komentar.id_detail
+		join kostum on detail.id_kostum = kostum.id_kostum 
+		join user on komentar.id_user= user.id_user where detail.id_kostum =$id_kostum")->result();
+		$this->response(array('status'=>'success',"result"=>$review)); 
+	}
 	function getRiwayat_post(){
         $id_user = $this->post('id_user');
         $riwayat = $this->db->query("
-            SELECT denda.jumlah_denda,log.id_detail,alamat.alamat,tempat_sewa.id_user ,
-            user.nama,sewa.tgl_transaksi,kostum.nama_kostum,detail.jumlah,kostum.harga_kostum,log.status_log
+            SELECT denda.jumlah_denda, denda.keterangan, log.id_detail,alamat.alamat,user.id_user ,
+            user.nama,sewa.tgl_transaksi,kostum.nama_kostum,detail.jumlah,kostum.harga_kostum,log.status_log, tempat_sewa.nama_tempat, denda.jumlah_denda, kostum.foto_kostum
              FROM sewa JOIN detail ON sewa.id_sewa = detail.id_sewa 
             JOIN log ON detail.id_detail = log.id_detail
             JOIN kostum ON kostum.id_kostum = detail.id_kostum
@@ -43,9 +50,9 @@ class Komentar extends REST_Controller{
             JOIN user ON user.id_user = tempat_sewa.id_user
             JOIN alamat ON sewa.id_alamat = alamat.id_alamat
 			join denda on denda.id_detail=log.id_detail
-			joi sewa on sewa.id_user= user.id_user
             WHERE sewa.id_user='$id_user' AND status_log='selesai';
-          ")->result();
+		  ")->result();
+	
 	   $this->response(array('status'=>'success',"result"=>$riwayat)); 
 	}
 	function tambahKomentar_post(){
@@ -63,6 +70,7 @@ class Komentar extends REST_Controller{
 		}
 		if(empty($message)){
 			$insert= $this->db->insert('komentar', $data_komentar);
+			$select=$this->db->query("SELECT id_detail from komentar WHERE id_detail ='".$data_komentar['id_detail']."'");	
 			if($insert){
                 $this->response(
                     array(
@@ -70,10 +78,34 @@ class Komentar extends REST_Controller{
                         "result"    => array($data_komentar),
                         "message"   => $insert
                     )
-                );
-            }else{
+				);
+				if(!empty($select)){
+					response(
+						array(
+							"status"    => "kosong"
+						
+						)
+					);
+				}
+				
+			}
+			else{
                 $this->response(array('status'=>'fail',"message"=>$message));
             }
 		}
 	} 
+	function cekKomentar_post(){
+		$id_user = $this->post('id_user');
+		$get_cek = $this->db->query("SELECT * from komentar JOIN detail ON komentar.id_detail =detail.id_detail where id_user=$id_user")->result();
+		$message="";
+		if(empty($get_cek)) $message.="komentar kosong";
+		if((!empty($get_cek))){
+			$this->response(array(
+				"status" =>"success",
+				"result" =>array($get_cek)
+			));
+		}
+	}
+
+
 }

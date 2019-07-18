@@ -88,8 +88,9 @@ class Pemesanan extends REST_Controller {
     }
     function getRiwayat_post(){
         $id_user = $this->post('id_user');
+        $id_detail =$this->post('id_detail');
         $riwayat = $this->db->query("
-            SELECT denda.jumlah_denda,log.id_detail,alamat.alamat,tempat_sewa.id_user ,
+            SELECT denda.jumlah_denda,log.id_detail,alamat.alamat,tempat_sewa.id_user , komentar.komentar,
             user.nama,sewa.tgl_transaksi,kostum.nama_kostum,detail.jumlah,kostum.harga_kostum,log.status_log
              FROM sewa JOIN detail ON sewa.id_sewa = detail.id_sewa 
             JOIN log ON detail.id_detail = log.id_detail
@@ -98,9 +99,28 @@ class Pemesanan extends REST_Controller {
             JOIN user ON user.id_user = tempat_sewa.id_user
             JOIN alamat ON sewa.id_alamat = alamat.id_alamat
             join denda on denda.id_detail=log.id_detail
+            join komentar on komentar.id_detail= detail.id_detail
             WHERE tempat_sewa.id_user='$id_user' AND status_log='selesai';
           ")->result();
-       $this->response(array('status'=>'success',"result"=>$riwayat));
+          $komentar = $this->db->query("SELECT * FROM komentar where id_detail=$id_detail")->result();
+          if(!empty($riwayat)){
+            $this->response(array('status'=>'success',"result"=>$riwayat));
+            if(!empty($komentar)){
+            $this->response(array('status'=>'success',"result"=>$komentar));
+            }
+            else{
+                $this->response(array('status'=>'kosong'));
+                
+            }
+          }
+          else{
+            $this->response(
+                array(
+                    "status" => "kosong"
+                )
+             );
+          }
+      
     }
     function inputDenda_post(){
         $id_log= $this->post('id_log');

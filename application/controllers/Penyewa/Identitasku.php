@@ -209,5 +209,24 @@ function myidentitas_post(){
         
             return $post_image;
         }
+        function cekIdentitas_post(){
+            $id_user= $this->post('id_user');
+            $select = $this->db->query("SELECT * from identitas where id_user = $id_user")->result();
+                if(!empty($select)){
+                    $select2 = $this->db->query("SELECT * from identitas where id_user = $id_user AND status <> 'valid'")->result();
+                    if (!empty($select2)) {
+                        $this->response(array(
+                            'status'=>'success',"result"=>$select));
+                    } else {
+
+                    }
+                }
+                else{
+                    $this->response(array(
+                    'status'=>'success'
+                    ));
+
+                }
+        }
 
 }
