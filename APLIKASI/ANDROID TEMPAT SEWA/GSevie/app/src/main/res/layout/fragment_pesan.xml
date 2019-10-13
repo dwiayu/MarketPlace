@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PesanFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:background="#FF9800"
+            android:layout_width="match_parent"
+            android:layout_height="280dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_marginTop="50dp"
+                    android:layout_width="200dp"
+                    android:layout_height="300dp"
+                    android:src="@drawable/tittle_sewa"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:id="@+id/peminjaman_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/sewa_kostum"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/sewa_kostum_icon" />
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/sewa_kostum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pilih Kostum"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="#000000"/>
+
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/pinjam_menu"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/pinjam"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/sewa_icon" />
+
+                        <com.nex3z.notificationbadge.NotificationBadge
+                            android:id="@+id/jumlahSewaMasuk"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_alignTop="@id/pinjam"
+                            android:layout_alignRight="@id/pinjam"
+                            tools:ignore="NotSibling"/>
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/pinjam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sewa"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="#000000"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/kembali_menu"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/kembali"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/riwayat_icon" />
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/kembali"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Riwayat"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="2dp"
+                            android:textColor="#000000"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

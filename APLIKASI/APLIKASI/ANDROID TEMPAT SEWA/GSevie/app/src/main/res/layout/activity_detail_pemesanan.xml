@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailPemesananActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/progressLayout">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/simpleProgressBarr"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="168dp"
+            tools:layout_editor_absoluteY="417dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="id sewa"
+        android:visibility="gone"
+        android:id="@+id/tIdSewa"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:layout_height="100dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/shopping"
+        android:id="@+id/buktiBayar"/>
+    <LinearLayout
+        android:layout_margin="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:text="Tidak"
+            android:id="@+id/btBatal"
+            android:layout_marginRight="30dp"
+            android:visibility="gone"
+            android:textColor="#ffffff"
+            android:background="#F44336"/>
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:text="Valid"
+            android:visibility="gone"
+            android:id="@+id/btValid"
+            android:textColor="#ffffff"
+            android:background="#4CAF50"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:textColor="#2196F3"
+            android:text="Penyewa"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fotoUser"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:contentDescription="@string/nav_header_desc"
+                android:paddingTop="@dimen/nav_header_vertical_spacing"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF5722"
+                android:src="@drawable/user"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/namaPenyewa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Penyewa"
+                    />
+
+                <TextView
+                    android:id="@+id/emailPenyewa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email Penyewa"
+                    />
+
+                <TextView
+                    android:id="@+id/noHpPenyewa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No HP Penyewa"
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:textColor="#2196F3"
+            android:text="Alamat"/>
+
+        <TextView
+            android:id="@+id/alamatPenyewa"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:text="Alamat Penyewa"/>
+
+        <TextView
+            android:id="@+id/desaPenyewa"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:text="Kelurahan"/>
+
+        <TextView
+            android:id="@+id/kecPenyewa"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:text="Kecamatan"/>
+        <TextView
+            android:id="@+id/kotaPenyewa"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:text="Kota"/>
+        <TextView
+            android:id="@+id/provPenyewa"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:text="Provinsi"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="#2196F3"
+            android:layout_marginLeft="5dp"
+            android:text="Total "
+            android:id="@+id/totalBayar"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

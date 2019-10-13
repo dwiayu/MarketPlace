@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    card_view:cardCornerRadius="6dp"
+    card_view:cardElevation="3dp"
+    card_view:cardUseCompatPadding="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="id_pemesanan"
+        android:visibility="gone"
+        android:id="@+id/idPemesanan"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/hargaKostum"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:id="@+id/gambarKostum"
+                android:src="@drawable/kostum_icon"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Sewa"
+                    android:textColor="#4CAF50"
+                    android:id="@+id/tglSewa"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:text="s/d"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Kembali"
+                    android:textColor="#F44336"
+                    android:id="@+id/tglKembali"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="nama kostum"
+                    android:textStyle="bold"
+                    android:textColor="#03A9F4"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/namaKostum"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_late"
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/shape_late"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/hariTerlambat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FCFBFB"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="0 hari"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_rent"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/shape_green"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/textSewa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FCFBFB"
+                        android:paddingLeft="5dp"
+                        android:visibility="gone"
+                        android:paddingRight="5dp"
+                        android:text="Sewa"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_kembali"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:background="@drawable/shape_yellow"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/textKembali"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FCFBFB"
+                        android:paddingLeft="5dp"
+                        android:visibility="gone"
+                        android:paddingRight="5dp"
+                        android:text="Kembali"/>
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nama Penyewa"
+                android:id="@+id/namaPenyewa"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Hp"
+                android:id="@+id/NoHp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="alamat"
+                android:id="@+id/alamat"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="jumlah sewa"
+                android:id="@+id/jmlSewa"/>
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total "/>
+            <TextView
+                android:id="@+id/harga"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Harga"/>
+
+            <Button
+                android:id="@+id/btKembali"
+                android:layout_width="98dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:background="#03A9F4"
+                android:textColor="#ffffff"
+                android:text="Selesai" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

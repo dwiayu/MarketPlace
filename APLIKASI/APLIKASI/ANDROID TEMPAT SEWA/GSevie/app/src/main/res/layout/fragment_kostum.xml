@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".KostumFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:background="#FF9800"
+            android:layout_width="match_parent"
+            android:layout_height="280dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_marginTop="50dp"
+                    android:layout_width="200dp"
+                    android:layout_height="300dp"
+                    android:src="@drawable/tittle"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/kategori_menu"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/kategori"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:padding="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/kategori_icon" />
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/kategori"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kategori"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="10dp"
+                            android:textColor="#000000"/>
+
+                    </RelativeLayout>
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+
+                    <RelativeLayout
+                        android:id="@+id/kostum_menu"
+                        android:layout_marginTop="20dp"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:background="@drawable/shape"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/kostum"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:padding="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/kostum_icon"
+                            />
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/kostum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Kostum"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="10dp"
+                            android:textColor="#000000"/>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

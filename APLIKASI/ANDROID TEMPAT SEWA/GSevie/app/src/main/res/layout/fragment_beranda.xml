@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BerandaFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:background="#FF9800"
+            android:layout_width="match_parent"
+            android:layout_height="280dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="50dp"
+                    android:src="@drawable/tittle"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:id="@+id/tempat_sewa_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/sewa_kostum"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/toko_icon" />
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/sewa_kostum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tempat Sewa"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="#000000"/>
+
+
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/penyewa_menu"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/alamat"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/penyewa_icon" />
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/alamat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Penyewa"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"
+                            android:textColor="#000000"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/komentar_menu"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:background="@drawable/shape"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_centerHorizontal="true"
+                            android:id="@+id/profil"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="0dp"
+                            android:src="@drawable/komentar_icon" />
+
+
+                        <TextView
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/profil"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Komentar"
+                            android:fontFamily="casual"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="2dp"
+                            android:textColor="#000000"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>
